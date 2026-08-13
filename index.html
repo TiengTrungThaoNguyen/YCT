@@ -139,9 +139,12 @@
   /* Sentence order */
   .sentord-answer{min-height:52px;border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:10px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:8px;margin-bottom:16px;background:var(--off-white);}
   .sentord-pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
-  .word-tok{padding:8px 14px;border-radius:99px;border:1.5px solid var(--border);background:#fff;font-size:15px;font-weight:600;cursor:pointer;color:#374151;transition:all .15s;}
+  .word-tok{padding:8px 14px;border-radius:99px;border:1.5px solid var(--border);background:#fff;font-size:15px;font-weight:600;cursor:pointer;color:#374151;transition:all .15s;text-align:center;}
   .word-tok:hover{border-color:var(--red);color:var(--red-dk);}
   .word-tok.used{opacity:.3;pointer-events:none;}
+  .tok-py{display:block;font-size:11px;font-weight:400;color:var(--gray);line-height:1.2;margin-bottom:1px;}
+  .tok-hanzi{display:block;}
+  .hanzi-pinyin{display:block;font-size:13px;font-weight:400;color:var(--gray);margin-top:2px;}
 
   /* Translate / writing text inputs */
   .translate-input,.writing-input{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;background:var(--off-white);margin-bottom:14px;}
@@ -483,13 +486,26 @@ function renderLessonList(){
   listEl.innerHTML = "";
   chosenLesson = null;
   startBtn.disabled = true;
-  startBtn.style.display = lessons.length ? "inline-flex" : "none";
-  if(!lessons.length){ emptyEl.style.display="block"; return; }
+
+  // Đếm số dạng bài tập THỰC SỰ dùng được (đã qua cleanItems, khớp đúng cách
+  // tính của selectLesson) — bài nào 0 dạng (chưa có nội dung hợp lệ) thì bỏ
+  // qua hẳn, không hiện trong danh sách, để tránh học sinh bấm vào bài trống.
+  const lessonsWithContent = lessons
+    .map(l => {
+      const countTypes = ACT_DEFS.filter(d => {
+        const raw = filterByLesson(pickArr(levelData, d.key), l.lesson);
+        return cleanItems(d.type, raw).length > 0;
+      }).length;
+      return {l, countTypes};
+    })
+    .filter(x => x.countTypes > 0);
+
+  startBtn.style.display = lessonsWithContent.length ? "inline-flex" : "none";
+  if(!lessonsWithContent.length){ emptyEl.style.display="block"; return; }
   emptyEl.style.display="none";
-  lessons.forEach(l=>{
+  lessonsWithContent.forEach(({l, countTypes})=>{
     const div = document.createElement("div");
     div.className = "lesson-card";
-    const countTypes = ACT_DEFS.filter(d => filterByLesson(pickArr(levelData,d.key), l.lesson).length>0).length;
     div.innerHTML =
       '<div class="lesson-num">'+l.lesson+'</div>'+
       '<div class="lesson-info">'+
@@ -564,7 +580,14 @@ function selectLesson(lessonObj){
   activities = ACT_DEFS.map(def => {
     const raw = filterByLesson(pickArr(levelData, def.key), lessonObj.lesson);
     const clean = cleanItems(def.type, raw);
-    return {...def, items: buildActivityItems(def.type, clean), qCount: countQuestions(def.type, clean)};
+    const items = buildActivityItems(def.type, clean);
+    // qCount phải tính trên `items` (đã gộp nhóm cho listen_mc/listen_tf/reading_mc),
+    // không phải trên `clean` (mảng câu phẳng) — countQuestions() cho 3 dạng nhóm
+    // đọc items[i].rows.length, nếu truyền nhầm mảng phẳng vào sẽ ném lỗi
+    // "Cannot read properties of undefined (reading 'length')" và dừng cả hàm
+    // selectLesson() giữa chừng — đây chính là nguyên nhân "bấm Bắt đầu làm bài"
+    // không phản ứng gì khi bài có dạng Nghe/Đọc hiểu.
+    return {...def, items, qCount: countQuestions(def.type, items)};
   }).filter(a => a.items.length > 0);
 
   if(!activities.length){
@@ -902,6 +925,11 @@ function renderSentenceOrder(body, item){
     else if(k > 10) break;
   }
   const words = answer.split(/\s+/).filter(Boolean);
+  // Cột "pinyin" (nếu Sheet có điền) — phải chứa đúng số từ, cùng thứ tự với
+  // cột "answer", cách nhau bằng dấu cách, để mỗi từ hiện đúng phiên âm của nó.
+  // Nếu không có cột này, hoặc số từ không khớp, hệ thống bỏ qua — chỉ hiện chữ Hán.
+  const rawPinyins = String(item.pinyin || "").trim() ? String(item.pinyin).trim().split(/\s+/) : [];
+  const pinyins = rawPinyins.length === words.length ? rawPinyins : null;
   sentordBuilt = [];
   sentordPoolUsed = new Array(words.length).fill(false);
   sentordSubmitted = false;
@@ -916,12 +944,14 @@ function renderSentenceOrder(body, item){
     '</div>'
   );
   window.__sentordWords = words;
+  window.__sentordPinyins = pinyins;
   window.__sentordAnswer = answer;
   window.__sentordAccepted = [answer, ...altAnswers];
   const poolEl = document.getElementById("sentord-pool");
   pool.forEach(({w,i})=>{
     const tok = document.createElement("div");
-    tok.className = "word-tok"; tok.textContent = w; tok.dataset.idx = i;
+    tok.className = "word-tok"; tok.dataset.idx = i;
+    tok.innerHTML = pinyins ? '<span class="tok-py">'+pinyins[i]+'</span><span class="tok-hanzi">'+w+'</span>' : w;
     tok.onclick = () => sentordPick(i, tok);
     poolEl.appendChild(tok);
   });
@@ -955,7 +985,14 @@ function sentordUndo(){
 }
 function renderSentordAnswer(){
   const el = document.getElementById("sentord-answer");
-  el.innerHTML = sentordBuilt.map(w=>'<span class="word-tok" style="cursor:default">'+w+'</span>').join("");
+  const pinyins = window.__sentordPinyins;
+  el.innerHTML = sentordBuilt.map(w=>{
+    if(pinyins){
+      const i = window.__sentordWords.indexOf(w);
+      if(i !== -1) return '<span class="word-tok" style="cursor:default"><span class="tok-py">'+pinyins[i]+'</span><span class="tok-hanzi">'+w+'</span></span>';
+    }
+    return '<span class="word-tok" style="cursor:default">'+w+'</span>';
+  }).join("");
 }
 function sentordNextOrCheck(){
   if(sentordBuilt.length !== window.__sentordWords.length) return;
@@ -1028,15 +1065,17 @@ const PUNCT_PENALTY_PER_ERROR = 2;
 function renderTranslate(body, item){
   const vn = item.vietnamese || "";
   const rawAnswers = [];
+  const rawPinyins = [];
   const answer1 = String(item.chinese || "").trim();
-  if(answer1) rawAnswers.push(answer1);
+  if(answer1){ rawAnswers.push(answer1); rawPinyins.push(String(item.pinyin || "").trim()); }
   for(let k = 2; k <= 99; k++){
     const chineseCol = "chinese" + k;
     const val = String(item[chineseCol] || "").trim();
-    if(val !== "") rawAnswers.push(val);
+    if(val !== ""){ rawAnswers.push(val); rawPinyins.push(String(item["pinyin"+k] || "").trim()); }
     else if(k > 10) break;
   }
   window.__translateAnswersDisplay = rawAnswers;
+  window.__translatePinyins = rawPinyins;
   window.__translateAnswers = rawAnswers.map(a => normalizeTranslateAnswer(a));
   body.insertAdjacentHTML("beforeend",
     '<div class="q-text">'+vn+'</div>'+
@@ -1051,6 +1090,8 @@ function renderTranslate(body, item){
 function checkTranslate(){
   const accepted = window.__translateAnswers || [];
   const displayAnswers = window.__translateAnswersDisplay || accepted;
+  const displayPinyins = window.__translatePinyins || [];
+  const withPinyin = (text, i) => (displayPinyins[i] ? text+' <span class="hanzi-pinyin" style="display:inline">('+displayPinyins[i]+')</span>' : text);
   const inp = document.getElementById("translate-input");
   const rawGiven = inp.value.trim();
   const given = normalizeTranslateAnswer(rawGiven);
@@ -1069,11 +1110,11 @@ function checkTranslate(){
   }
 
   if(ok && punctErrors === 0){
-    fb.textContent = "✓ Chính xác!";
+    fb.innerHTML = "✓ Chính xác!" + (displayPinyins[matchIdx] ? ' <span class="hanzi-pinyin" style="display:inline">('+displayPinyins[matchIdx]+')</span>' : "");
   } else if(ok && punctErrors > 0){
-    fb.textContent = "✓ Đúng nội dung, nhưng sai "+punctErrors+" dấu câu (trừ "+(punctErrors*PUNCT_PENALTY_PER_ERROR)+" điểm). Đáp án chuẩn: "+(displayAnswers[matchIdx] || "");
+    fb.innerHTML = "✓ Đúng nội dung, nhưng sai "+punctErrors+" dấu câu (trừ "+(punctErrors*PUNCT_PENALTY_PER_ERROR)+" điểm). Đáp án chuẩn: "+withPinyin(displayAnswers[matchIdx] || "", matchIdx);
   } else {
-    fb.textContent = "✗ Đáp án đúng: "+displayAnswers.join(" / ");
+    fb.innerHTML = "✗ Đáp án đúng: "+displayAnswers.map((a,i)=>withPinyin(a,i)).join(" / ");
   }
 
   const act = activities[actIndex];
@@ -1087,8 +1128,9 @@ function checkTranslate(){
 function renderWriting(body, item){
   const word = item.word || "";
   const hint = item.hint || "";
+  const pinyin = (item.pinyin && String(item.pinyin).trim()) ? String(item.pinyin).trim() : "";
   body.insertAdjacentHTML("beforeend",
-    '<div class="q-text">Đặt câu với từ: <strong>'+word+'</strong></div>'+
+    '<div class="q-text">Đặt câu với từ: <strong>'+word+'</strong>'+(pinyin ? ' <span class="hanzi-pinyin" style="display:inline;font-size:16px">('+pinyin+')</span>' : '')+'</div>'+
     (hint ? '<div class="hint" style="margin-bottom:10px">💡 '+hint+'</div>' : '')+
     '<textarea class="writing-input" id="writing-input" placeholder="Viết câu của bạn ở đây..."></textarea>'+
     '<div class="quiz-nav"><button class="btn btn-primary" onclick="saveWriting(\''+String(word).replace(/'/g,"\\'")+'\', \''+String(hint).replace(/'/g,"\\'")+'\')">Lưu câu, tiếp theo →</button></div>'
