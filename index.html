@@ -114,6 +114,8 @@
   .lesson-list{display:flex;flex-direction:column;gap:10px;}
   .lesson-card{display:flex;align-items:center;gap:14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;cursor:pointer;transition:all .18s;background:var(--white);}
   .lesson-card:hover{border-color:var(--red);background:var(--red-pale);transform:translateY(-2px);box-shadow:var(--shadow);}
+  .lesson-card.selected{border-color:var(--red);background:var(--red-pale);box-shadow:0 0 0 3px rgba(124,58,237,.15);}
+  .lesson-card.selected .lesson-num{background:var(--red);color:#fff;}
   .lesson-num{width:40px;height:40px;border-radius:50%;background:var(--red-pale);color:var(--red-dk);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0;}
   .lesson-info{flex:1;min-width:0;}
   .lesson-title{font-weight:700;font-size:14px;color:#1f2937;}
@@ -236,6 +238,7 @@
       <div class="section-title" id="lessons-title">Chọn bài học</div>
       <div class="lesson-list" id="lesson-list"></div>
       <div class="empty-box" id="lessons-empty" style="display:none">Cấp độ này chưa có bài học nào. Vui lòng liên hệ giáo viên.</div>
+      <button class="btn btn-primary btn-full" id="btn-start-lesson" style="margin-top:16px" disabled onclick="startSelectedLesson()">Bắt đầu làm bài →</button>
     </div>
   </div>
 
@@ -476,7 +479,11 @@ function renderLessonList(){
   }
   const listEl = document.getElementById("lesson-list");
   const emptyEl = document.getElementById("lessons-empty");
+  const startBtn = document.getElementById("btn-start-lesson");
   listEl.innerHTML = "";
+  chosenLesson = null;
+  startBtn.disabled = true;
+  startBtn.style.display = lessons.length ? "inline-flex" : "none";
   if(!lessons.length){ emptyEl.style.display="block"; return; }
   emptyEl.style.display="none";
   lessons.forEach(l=>{
@@ -490,9 +497,19 @@ function renderLessonList(){
         '<div class="lesson-sub">'+countTypes+' dạng bài tập</div>'+
       '</div>'+
       '<div class="lesson-arrow">→</div>';
-    div.onclick = () => selectLesson(l);
+    div.onclick = () => {
+      document.querySelectorAll("#lesson-list .lesson-card").forEach(c=>c.classList.remove("selected"));
+      div.classList.add("selected");
+      chosenLesson = l;
+      startBtn.disabled = false;
+    };
     listEl.appendChild(div);
   });
+}
+let chosenLesson = null;
+function startSelectedLesson(){
+  if(!chosenLesson) return;
+  selectLesson(chosenLesson);
 }
 
 // ───────────────────────────────────────────────────────
