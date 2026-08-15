@@ -318,7 +318,7 @@
 // báo lỗi tải dữ liệu (không ảnh hưởng các cấp đã deploy xong).
 const YCT_URL = {
   YCT1: "https://script.google.com/macros/s/AKfycbw3Fl2Th0-_PbUDquu_lwGz0kCiAfwsZ1Wu6nEaHdp-EiNSGF9vZ81bEh6Z78PnoRTX/exec",
-  YCT2: "https://script.google.com/macros/s/AKfycbxMMqoZLtdSRQpuj2o6vMMnkwZycmPCOnMr_Eww5MPAhdqklOYFy8rbR2YZ7vqkXw7UGg/exec",
+  YCT2: "https://script.google.com/macros/s/AKfycbzPOVUhUQCGrYswKlsgmlY7TRxT5s9myrhWXlsuWqN8f_51PnZPRuSQ_cDu9UJyGwvj/exec",
   YCT3: "https://script.google.com/macros/s/AKfycbx2LFoaGmJhiyZgF3ASnN5fQXlTVBv_-6iu7498_8IN2JP0-IHa7g4KVOLEhWiEwAAN/exec",
   YCT4: "https://script.google.com/macros/s/AKfycbyFz9_ra0eitqLTxLQnfFIaHIQ7Gf5F4h4PEWLvlNnXvdm1VLCobiHCyiS4VaIpNznC/exec",
   YCT5: "https://script.google.com/macros/s/AKfycbx-zk4lieylSLJAXnh-OCqiQHo-mkttqb7s8bhC5OKdb-x3BKAYVTD_nmXGcr-HNP3g0A/exec",
@@ -595,6 +595,15 @@ function selectLesson(lessonObj){
     return;
   }
 
+  // Tổng điểm luôn là 100 — chia đều cho các dạng có chấm điểm tự động đang
+  // xuất hiện trong bài này (SCORE_WEIGHTS). "Đặt câu" (writing) không có
+  // trong SCORE_WEIGHTS nên luôn có weight = null (không tính điểm tự động,
+  // GV chấm tay riêng) — gán weight ngay từ bước này để hiện được điểm từng
+  // phần NGAY TRONG LÚC làm bài (không chỉ đợi tới màn kết quả cuối).
+  const scoringTypesCount = activities.filter(a => SCORE_WEIGHTS[a.type]).length;
+  const perTypeWeight = scoringTypesCount > 0 ? 100 / scoringTypesCount : 0;
+  activities.forEach(a => { a.weight = SCORE_WEIGHTS[a.type] ? perTypeWeight : null; });
+
   actIndex = 0; itemIndex = 0;
   results = {};
   translatePunctPenalty = 0;
@@ -630,8 +639,9 @@ function updateActBar(){
   const done = completedItemsCount();
   const pct = total ? Math.round((done/total)*100) : 0;
   const isGrouped = (act.type==="listen_mc"||act.type==="listen_tf"||act.type==="reading_mc");
+  const weightText = act.weight != null ? (" · "+(Math.round(act.weight*10)/10)+"đ") : " · GV chấm tay";
   document.getElementById("act-prog-text").textContent =
-    act.icon+" "+act.label+" · "+(isGrouped ? ("Nhóm "+(itemIndex+1)+" / "+act.items.length) : ((itemIndex+1)+" / "+act.items.length));
+    act.icon+" "+act.label+weightText+" · "+(isGrouped ? ("Nhóm "+(itemIndex+1)+" / "+act.items.length) : ((itemIndex+1)+" / "+act.items.length));
   document.getElementById("act-prog-pct").textContent = pct+"%";
   document.getElementById("act-prog-fill").style.width = pct+"%";
   renderActStepDots();
@@ -647,7 +657,8 @@ function renderStep(){
   body.innerHTML = "";
   const title = document.createElement("div");
   title.className = "act-type-label";
-  title.textContent = act.icon+" "+act.label;
+  const titleWeight = act.weight != null ? (" — "+(Math.round(act.weight*10)/10)+" điểm") : " — GV chấm tay, không tính vào 100đ tự động";
+  title.textContent = act.icon+" "+act.label+titleWeight;
   body.appendChild(title);
 
   try{
