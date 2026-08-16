@@ -862,19 +862,31 @@ function renderReadingMC(body, group){
     const block = document.createElement("div");
     block.className = "subq-block";
     block.dataset.stt = row.stt;
+    // Mỗi câu trong "Đọc hiểu" tự nhận diện kiểu đáp án riêng: nếu cột
+    // "Đáp án đúng" ghi "Đúng"/"Sai" thì hiện 2 nút Đúng/Sai, còn lại (A/B/C/D)
+    // thì hiện 4 nút chữ cái — nhờ vậy 1 bài đọc có thể trộn cả 2 kiểu câu hỏi.
+    const ansNorm = normLoose(row.dap_an_dung);
+    const isTF = (ansNorm === "dung" || ansNorm === "sai");
     block.innerHTML =
       '<div class="subq-num">Câu '+row.stt+'</div>'+
-      '<div class="subq-letter-choices">'+
-        LABELS.map(l=>'<div class="subq-letter" data-letter="'+l+'">'+l+'</div>').join("")+
-      '</div>'+
+      (isTF ?
+        '<div class="subq-tf-choices">'+
+          '<div class="subq-tf" data-val="Đúng">Đúng</div>'+
+          '<div class="subq-tf" data-val="Sai">Sai</div>'+
+        '</div>'
+      :
+        '<div class="subq-letter-choices">'+
+          LABELS.map(l=>'<div class="subq-letter" data-letter="'+l+'">'+l+'</div>').join("")+
+        '</div>'
+      )+
       '<div class="subq-fb"></div>';
     wrap.appendChild(block);
-    block.querySelectorAll("[data-letter]").forEach(el=>{
+    block.querySelectorAll("[data-letter],[data-val]").forEach(el=>{
       el.onclick = ()=>{
         if(groupState.submitted) return;
-        block.querySelectorAll("[data-letter]").forEach(x=>x.classList.remove("selected"));
+        block.querySelectorAll("[data-letter],[data-val]").forEach(x=>x.classList.remove("selected"));
         el.classList.add("selected");
-        groupState.picks[row.stt] = el.dataset.letter;
+        groupState.picks[row.stt] = el.dataset.letter || el.dataset.val;
         refreshGroupSubmitBtn(group.rows);
       };
     });
