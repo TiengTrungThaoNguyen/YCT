@@ -551,7 +551,12 @@ function groupByKey(rows, fields){
 function cleanItems(type, items){
   switch(type){
     case "word_matching": return items.filter(r => String(r.hanzi || r.word || "").trim() && String(r.vietnamese || r.nghia || "").trim());
-    case "listen_mc":     return items.filter(r => String(r.link_audio||"").trim() && String(r.dap_an_dung||"").trim() && (r.anh_a||r.anh_b||r.anh_c||r.anh_d));
+    case "listen_mc":     return items.filter(r => {
+      if(!String(r.link_audio||"").trim() || !String(r.dap_an_dung||"").trim()) return false;
+      const isTF = ["dung","sai"].includes(normLoose(r.dap_an_dung));
+      // Câu Đúng/Sai không bắt buộc phải có ảnh; câu chọn A-D vẫn cần ít nhất 1 ảnh.
+      return isTF || (r.anh_a||r.anh_b||r.anh_c||r.anh_d);
+    });
     case "listen_tf":     return items.filter(r => String(r.link_audio||"").trim() && String(r.link_anh||"").trim() && String(r.dap_an||"").trim());
     case "reading_mc":    return items.filter(r => String(r.link_anh||"").trim() && String(r.dap_an_dung||"").trim());
     case "sentence_order":return items.filter(r => String(r.answer || "").trim());
@@ -775,7 +780,22 @@ function renderListenMC(body, group){
     const block = document.createElement("div");
     block.className = "subq-block";
     block.dataset.stt = row.stt;
-    if(imgs.length >= 2){
+    // Cũng tự nhận diện câu Đúng/Sai giống hệt Đọc hiểu: nếu cột "Đáp án đúng"
+    // của câu đó ghi "Đúng"/"Sai" thì hiện 2 nút Đúng/Sai (không cần ảnh) —
+    // nhờ vậy 1 bài nghe có thể trộn cả câu chọn ảnh/A-D lẫn câu Đúng/Sai.
+    const ansNorm = normLoose(row.dap_an_dung);
+    const isTF = (ansNorm === "dung" || ansNorm === "sai");
+    if(isTF){
+      const singleImg = imgs[0] ? imgs[0].url : "";
+      block.innerHTML =
+        '<div class="subq-num">Câu '+row.stt+'</div>'+
+        (singleImg ? '<div class="group-media" style="margin-bottom:10px;padding:8px"><img src="'+driveDirectUrl(singleImg,"image")+'"></div>' : '')+
+        '<div class="subq-tf-choices">'+
+          '<div class="subq-tf" data-val="Đúng">Đúng</div>'+
+          '<div class="subq-tf" data-val="Sai">Sai</div>'+
+        '</div>'+
+        '<div class="subq-fb"></div>';
+    } else if(imgs.length >= 2){
       block.innerHTML =
         '<div class="subq-num">Câu '+row.stt+'</div>'+
         '<div class="subq-img-choices">'+
@@ -795,12 +815,12 @@ function renderListenMC(body, group){
         '<div class="subq-fb"></div>';
     }
     wrap.appendChild(block);
-    block.querySelectorAll("[data-letter]").forEach(el=>{
+    block.querySelectorAll("[data-letter],[data-val]").forEach(el=>{
       el.onclick = ()=>{
         if(groupState.submitted) return;
-        block.querySelectorAll("[data-letter]").forEach(x=>x.classList.remove("selected"));
+        block.querySelectorAll("[data-letter],[data-val]").forEach(x=>x.classList.remove("selected"));
         el.classList.add("selected");
-        groupState.picks[row.stt] = el.dataset.letter;
+        groupState.picks[row.stt] = el.dataset.letter || el.dataset.val;
         refreshGroupSubmitBtn(group.rows);
       };
     });
