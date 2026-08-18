@@ -213,12 +213,12 @@ const LEVELS = [
   { key: 'YCT6', label: 'YCT 6', icon: '🏆', cn: '六级' }
 ];
 const APPS_SCRIPT_URLS = {
-  YCT1: "https://script.google.com/macros/s/AKfycbw3Fl2Th0-_PbUDquu_lwGz0kCiAfwsZ1Wu6nEaHdp-EiNSGF9vZ81bEh6Z78PnoRTX/exec",
-  YCT2: "https://script.google.com/macros/s/AKfycbzPOVUhUQCGrYswKlsgmlY7TRxT5s9myrhWXlsuWqN8f_51PnZPRuSQ_cDu9UJyGwvj/exec",
-  YCT3: "https://script.google.com/macros/s/AKfycbx2LFoaGmJhiyZgF3ASnN5fQXlTVBv_-6iu7498_8IN2JP0-IHa7g4KVOLEhWiEwAAN/exec",
-  YCT4: "https://script.google.com/macros/s/AKfycbwoZMKwssQKf1uJZawJM_0Fe7ki9k1_xDyfkFBSO5KbnguolGcl9UTZa6Nt1MEzbHFV/exec",
-  YCT5: "https://script.google.com/macros/s/AKfycbwYWi86TJWPRsgKb1DR7Uu8rsRSMyOacJrI1n5MILSIDi_AeE1GSLtZ9-u4TKFwxPHiIA/exec",
-  YCT6: "https://script.google.com/macros/s/AKfycbxHPvMefZhgh7meyLR7nezNoWGrrGcqfeyzz77tpk9j1GctctVrol_TVr2meUVGXsWqiQ/exec"
+  YCT1: "https://script.google.com/macros/s/AKfycbycs49OfzC8gFh0M1qd6wq9OuDyYXFMpW7X0WlXDEe-TSsIsgsp_jlLW0GpnmzcLi3g/exec",
+  YCT2: "https://script.google.com/macros/s/AKfycbyoWLhLN6Q3Su_wurNbTNF4xL9fUoOL_LVAQHbRtMwQH_DrN_firIWejs6PLNC_ls_Z/exec",
+  YCT3: "https://script.google.com/macros/s/AKfycbzQk-xnjxuDwYJ5Q9fpscALfN0YIRj4r6UeysCN5tjUpGCfahXG77uEBI021HkyTdcS/exec",
+  YCT4: "https://script.google.com/macros/s/AKfycbx_ODVjgltJGK_ANfNSh6kFUmdTqrxLZ6JaFGerm0ZX3x975hrHcdt2d1PHlpUWAclN/exec",
+  YCT5: "https://script.google.com/macros/s/AKfycbzNnWMrKWOmnhM4v_6-yWjl6ywb82DOYA489Zox2j_VZFgLtigGgFo2Ib6PQMmOEEC4zg/exec",
+  YCT6: "https://script.google.com/macros/s/AKfycbyre3UzJ6xOuczxt7KjMdHvfxSOWGUsw5Y6_GkuZiXMoi7pSBLme-gBa1v6QTENF8yTVw/exec"
 };
 
 // ===================== STATE =====================
@@ -294,8 +294,8 @@ async function loadData(){
     if(!res.ok) throw new Error('HTTP ' + res.status);
     DATA = await res.json();
     buildSidebar();
-    const firstAvailable = DATA.lessons.find(l => lessonHasContent(Number(l.lesson)));
-    if(firstAvailable) selectLesson(Number(firstAvailable.lesson));
+    const firstAvailable = DATA.lessons.find(l => lessonHasContent(rowLesson(l)));
+    if(firstAvailable) selectLesson(rowLesson(firstAvailable));
     else document.getElementById('main').innerHTML = '<div class="note-box">Chưa có bài nào có dữ liệu.</div>';
   }catch(err){
     document.getElementById('main').innerHTML = `<div class="status-banner err">
@@ -304,15 +304,23 @@ async function loadData(){
   }
 }
 
+// Cột số bài trong 1 số tab có thể được giáo viên gõ hoa/thường khác nhau
+// (vd "lesson" ở tab này, "Lesson" ở tab khác) — đọc dung hoà mọi kiểu viết
+// để không bị rớt dữ liệu chỉ vì lệch hoa/thường tên cột.
+function rowLesson(r){
+  const v = r.lesson ?? r.Lesson ?? r.LESSON ?? r.Lession;
+  return Number(v);
+}
+
 function lessonHasContent(lessonNum){
   // listen1_YCTx giờ gộp chung cả 2 dạng nghe (chọn A-D và Đúng/Sai) nên không cần
   // kiểm tra riêng DATA.listen2 nữa (tab đó không còn được dùng để hiển thị).
   const groups = [DATA.words, DATA.listen1, DATA.read, DATA.mc, DATA.sentenceOrder, DATA.translate, DATA.writing];
-  return groups.some(g => (g||[]).some(r => Number(r.lesson) === lessonNum));
+  return groups.some(g => (g||[]).some(r => rowLesson(r) === lessonNum));
 }
 
 function rowsFor(group, lessonNum){
-  return (DATA[group] || []).filter(r => Number(r.lesson) === lessonNum);
+  return (DATA[group] || []).filter(r => rowLesson(r) === lessonNum);
 }
 
 // ===================== SIDEBAR =====================
@@ -320,7 +328,7 @@ function buildSidebar(){
   const el = document.getElementById('lessonList');
   el.innerHTML = '';
   DATA.lessons.forEach(l => {
-    const num = Number(l.lesson);
+    const num = rowLesson(l);
     const has = lessonHasContent(num);
     const div = document.createElement('div');
     div.className = 'lesson-item' + (state.lesson === num ? ' active' : '') + (has ? '' : ' disabled');
@@ -355,7 +363,7 @@ function driveAudio(link){
 
 // ===================== RENDER TỪNG PHẦN =====================
 function renderLesson(num){
-  const lessonLabel = (DATA.lessons.find(l => Number(l.lesson) === num) || {})['Số bài'] || ('Bài ' + num);
+  const lessonLabel = (DATA.lessons.find(l => rowLesson(l) === num) || {})['Số bài'] || ('Bài ' + num);
   const levelLabel = (LEVELS.find(l => l.key === state.level) || {}).label || state.level;
   document.getElementById('topTitle').textContent = 'Tiếng Trung Thảo Nguyên — ' + levelLabel + ' — ' + lessonLabel;
   document.getElementById('topSub').textContent = 'Luyện tập YCT — dữ liệu lấy trực tiếp từ Google Sheet';
