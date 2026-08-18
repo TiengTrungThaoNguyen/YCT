@@ -5,1344 +5,786 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tiếng Trung Thảo Nguyên – Luyện tập YCT</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap');
-  :root{--red:#7c3aed;--red-dk:#4c1d95;--red-md:#8b5cf6;--red-lt:#f5f3ff;--red-pale:#faf5ff;--white:#ffffff;--off-white:#fafafa;--gray:#6b7280;--gray-lt:#f3f4f6;--border:#e5e7eb;--green:#16a34a;--shadow:0 4px 20px rgba(76,29,149,.12);--shadow-lg:0 10px 40px rgba(76,29,149,.18);--radius:14px;--radius-sm:8px;}
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Be Vietnam Pro','Segoe UI',system-ui,sans-serif;background:linear-gradient(160deg,#4c1d95 0%,#7c3aed 35%,#a78bfa 60%,#ede9fe 100%);min-height:100vh;}
-
-  .hero{background:linear-gradient(135deg,#4c1d95 0%,#7c3aed 50%,#5b21b6 100%);padding:28px 20px 32px;text-align:center;position:relative;overflow:hidden;}
-  .hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
-  .hero-inner{position:relative;max-width:700px;margin:0 auto;}
-  .hero-title{font-size:26px;font-weight:900;color:#fff;letter-spacing:1px;text-shadow:0 2px 8px rgba(0,0,0,.3);line-height:1.2;}
-  .hero-cn{font-size:14px;color:rgba(255,255,255,.75);letter-spacing:4px;margin-top:4px;}
-  .hero-sub{font-size:13px;color:rgba(255,255,255,.65);margin-top:6px;}
-  .hero-divider{width:48px;height:3px;background:rgba(255,255,255,.5);border-radius:99px;margin:14px auto 0;}
-
-  .main{max-width:700px;margin:0 auto;padding:0 14px 60px;}
-  .card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-lg);margin-top:-12px;overflow:hidden;}
-  .card-body{padding:28px 28px 32px;}
-  .screen{display:none;}.screen.active{display:block;}
-
-  .section-title{font-size:13px;font-weight:700;color:var(--red-dk);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-  .section-title::before{content:'';display:block;width:4px;height:16px;background:var(--red);border-radius:2px;}
-
-  .level-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;}
-  .level-card{border:2px solid var(--border);border-radius:var(--radius-sm);padding:18px 14px 16px;text-align:center;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);background:var(--white);position:relative;}
-  .level-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
-  .level-card.selected{border-color:var(--red);background:var(--red-pale);box-shadow:0 0 0 3px rgba(124,58,237,.15);}
-  .level-icon{font-size:26px;display:block;margin-bottom:6px;}
-  .level-name{font-size:17px;font-weight:800;color:#1f2937;}
-  .level-hanzi{font-size:12px;color:var(--red);font-weight:600;margin-top:2px;letter-spacing:1px;}
-  .level-desc{font-size:11px;color:var(--gray);margin-top:4px;}
-  .level-badge{position:absolute;top:8px;right:8px;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:var(--gray-lt);color:#374151;}
-
-  .form-divider{border:none;border-top:1px dashed var(--border);margin:0 0 24px;}
-  .form-row{margin-bottom:16px;}
-  .form-row label{display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:#374151;text-transform:uppercase;letter-spacing:.5px;}
-  .form-row input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;background:var(--off-white);}
-  .form-row input:focus{border-color:var(--red);background:#fff;box-shadow:0 0 0 3px rgba(124,58,237,.1);}
-  .hint{font-size:11px;color:var(--gray);margin-top:4px;}
-  .error-msg{color:var(--red);font-size:11px;margin-top:4px;display:none;font-weight:600;}
-  .error-level{color:var(--red);font-size:12px;font-weight:600;margin:-8px 0 14px;display:none;}
-
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:var(--radius-sm);font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;border:none;transition:all .18s;letter-spacing:.3px;}
-  .btn:active{transform:scale(.97);}
-  .btn:disabled{opacity:.5;cursor:not-allowed;}
-  .btn-full{width:100%;}
-  .btn-primary{background:linear-gradient(135deg,var(--red) 0%,var(--red-dk) 100%);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,.4);}
-  .btn-primary:hover:not(:disabled){box-shadow:0 6px 20px rgba(124,58,237,.5);transform:translateY(-1px);}
-  .btn-success{background:linear-gradient(135deg,#16a34a 0%,#15803d 100%);color:#fff;box-shadow:0 4px 14px rgba(22,163,74,.35);}
-  .btn-outline{background:var(--white);border:1.5px solid var(--border);color:#374151;}
-  .btn-outline:hover{background:var(--gray-lt);}
-
-  .loading-box{text-align:center;padding:60px 20px;}
-  .spinner{width:44px;height:44px;border:4px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .65s linear infinite;margin:0 auto 16px;}
-  @keyframes spin{to{transform:rotate(360deg);}}
-  .loading-text{font-size:14px;color:var(--gray);font-weight:500;}
-
-  .quiz-topbar{background:linear-gradient(135deg,var(--red-dk) 0%,var(--red) 100%);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .quiz-level-pill{font-size:12px;font-weight:800;color:#fff;background:rgba(255,255,255,.18);border-radius:99px;padding:4px 12px;letter-spacing:.5px;}
-  .quiz-student-info{font-size:12px;color:rgba(255,255,255,.8);text-align:right;line-height:1.4;}
-  .progress-wrap{padding:14px 20px 0;}
-  .progress-row{display:flex;justify-content:space-between;font-size:11px;color:var(--gray);margin-bottom:6px;font-weight:600;}
-  .progress-bar{height:5px;background:#e5e7eb;border-radius:99px;}
-  .progress-fill{height:100%;background:linear-gradient(90deg,var(--red) 0%,var(--red-md) 100%);border-radius:99px;transition:width .4s ease;}
-  .quiz-body{padding:20px 20px 24px;}
-  .q-label{font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-  .q-text{font-size:16px;font-weight:600;line-height:1.65;color:#111827;margin-bottom:12px;}
-
-  .hint-box{background:var(--red-pale);border:1px solid #fecaca;border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:18px;text-align:center;display:none;}
-  .hint-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#f87171;font-weight:700;margin-bottom:6px;}
-  .hint-hanzi{font-size:32px;font-weight:700;color:var(--red-dk);letter-spacing:6px;line-height:1.2;}
-  .hint-pinyin{font-size:15px;color:#b91c1c;margin-top:6px;font-style:italic;letter-spacing:2px;font-weight:500;}
-
-  .choices{display:flex;flex-direction:column;gap:9px;}
-  .choice{display:flex;align-items:center;gap:12px;padding:12px 15px;border-radius:var(--radius-sm);border:1.5px solid var(--border);cursor:pointer;transition:all .15s;font-size:14px;font-weight:500;color:#374151;background:var(--white);}
-  .choice:hover:not(.locked){background:var(--red-pale);border-color:var(--red);color:var(--red-dk);}
-  .choice .badge{min-width:28px;height:28px;border-radius:50%;background:var(--gray-lt);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#6b7280;flex-shrink:0;}
-  .choice.selected{border-color:var(--red);background:var(--red-pale);}
-  .choice.selected .badge{background:var(--red);color:#fff;}
-  .choice.correct{border-color:#16a34a;background:#f0fdf4;}
-  .choice.correct .badge{background:#16a34a;color:#fff;}
-  .choice.wrong{border-color:#ef4444;background:#fef2f2;}
-  .choice.wrong .badge{background:#ef4444;color:#fff;}
-  .choice.locked{cursor:default;}
-  .feedback{margin-top:13px;padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;display:none;font-weight:600;}
-  .feedback.correct{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
-  .feedback.wrong{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;}
-  .quiz-nav{display:flex;justify-content:flex-end;margin-top:18px;}
-
-  .result-hero{background:linear-gradient(135deg,var(--red-dk) 0%,var(--red) 100%);padding:28px 20px;text-align:center;}
-  .score-ring{width:110px;height:110px;border-radius:50%;border:5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 14px;}
-  .score-big{font-size:36px;font-weight:900;color:#fff;line-height:1;}
-  .score-denom{font-size:12px;color:rgba(255,255,255,.7);margin-top:2px;}
-  .result-grade{font-size:20px;font-weight:800;color:#fff;margin-bottom:4px;}
-  .result-info{font-size:12px;color:rgba(255,255,255,.7);}
-  .result-body{padding:22px;}
-  .submit-status{text-align:center;font-size:12px;color:var(--gray);margin-top:10px;min-height:18px;font-weight:600;}
-  .submit-status.ok{color:#16a34a;}.submit-status.err{color:#ef4444;}
-  .result-divider{border:none;border-top:1px solid var(--border);margin:18px 0;}
-  .footer{text-align:center;padding:18px;font-size:11px;color:rgba(255,255,255,.5);}
-
-  @media(max-width:480px){
-    .card-body{padding:20px 16px 24px;}.quiz-body{padding:16px;}.result-body{padding:16px;}
-    .level-grid{grid-template-columns:1fr;}
-    .hero-title{font-size:21px;}.hint-hanzi{font-size:26px;}
+  :root{
+    --purple:#4a2472; --purple-dark:#2b1348; --accent:#7c3aed; --accent-dark:#5b21b6;
+    --red:#c0392b; --red-dark:#922b21;
+    --green:#27ae60; --blue:#7c3aed; --bg:#eee9f5; --card:#ffffff; --ink:#2c2c2c;
+    --muted:#7a7a7a; --amber:#e8a33d;
+    --line:#e4dcf0; --soft:#faf7ff;
   }
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;font-family:"Segoe UI",Arial,"Noto Sans SC",sans-serif;background:var(--bg);color:var(--ink);}
+  .app-shell{display:flex;height:100vh;overflow:hidden;}
+  .sidebar{width:270px;flex:0 0 270px;background:linear-gradient(180deg,var(--purple),var(--accent-dark));
+    color:#f1e9fa;overflow-y:auto;display:flex;flex-direction:column;}
+  .sidebar-header{padding:20px 16px 18px;border-bottom:1px solid rgba(255,255,255,.14);
+    background:linear-gradient(135deg,var(--purple),var(--accent));position:relative;overflow:hidden;}
+  .sidebar-header::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,.14) 2px, transparent 2px);background-size:24px 24px;}
+  .sidebar-header > *{position:relative;}
+  .sidebar-header .brand{font-size:16px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.6px;line-height:1.3;}
+  .sidebar-header .brand-sub{font-size:11px;color:#d9c3f0;margin-top:4px;}
+  .course-title{padding:12px 16px;font-size:12.5px;font-weight:bold;color:#e6d6f5;text-transform:uppercase;letter-spacing:.5px;}
+  .lesson-item{padding:9px 16px;font-size:13px;cursor:pointer;color:#e3d2f2;border-left:3px solid transparent;display:flex;justify-content:space-between;}
+  .lesson-item:hover{background:rgba(255,255,255,.08);}
+  .lesson-item.active{background:rgba(255,255,255,.16);border-left-color:#c9a3ec;color:#fff;font-weight:bold;}
+  .lesson-item.disabled{color:#a58fc0;cursor:default;}
+  .lesson-item.disabled:hover{background:none;}
+  .lesson-item .soon{font-size:10px;background:rgba(255,255,255,.14);padding:2px 6px;border-radius:10px;}
+  .main-wrap{flex:1;overflow-y:auto;min-width:0;display:flex;flex-direction:column;}
+  .top-bar{background:linear-gradient(135deg,var(--purple),var(--accent));padding:16px 24px;position:relative;overflow:hidden;}
+  .top-bar::before{content:"";position:absolute;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.12) 2px, transparent 2px);background-size:22px 22px;pointer-events:none;}
+  .top-bar h1{margin:0;font-size:18px;color:#fff;position:relative;}
+  .top-bar p{margin:3px 0 0;font-size:12px;color:#eadcfb;position:relative;}
+  main{flex:1;padding:18px 24px 60px;max-width:860px;}
+  .section-title{font-size:13.5px;font-weight:bold;color:#fff;margin:24px 0 12px;padding:8px 14px;
+    background:linear-gradient(135deg,var(--purple),var(--accent));border-radius:8px;
+    text-transform:uppercase;letter-spacing:.4px;box-shadow:0 2px 8px rgba(74,36,114,.18);}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(74,36,114,.07);}
+  .qnum{display:inline-block;background:linear-gradient(135deg,var(--purple),var(--accent));color:#fff;border-radius:50%;width:26px;height:26px;
+    text-align:center;line-height:26px;font-size:13px;font-weight:bold;margin-right:8px;}
+  .prompt{font-size:17px;margin:6px 0 12px;line-height:1.6;}
+  .hanzi-big{font-size:32px;text-align:center;margin:6px 0 10px;}
+  .options{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .opt-btn{border:1px solid var(--line);background:var(--soft);border-radius:7px;padding:8px 12px;cursor:pointer;font-size:14px;}
+  .opt-btn:hover{border-color:var(--blue);}
+  .opt-btn.selected{border-color:var(--blue);background:#f0e9fb;}
+  .opt-btn.correct{border-color:var(--green);background:#e8f8ef;color:#1e8449;font-weight:bold;}
+  .opt-btn.wrong{border-color:#c0392b;background:#fdecea;color:#c0392b;}
+  .img-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px;}
+  .img-opt{border:2px solid var(--line);border-radius:8px;padding:6px;cursor:pointer;text-align:center;background:var(--soft);}
+  .img-opt img{max-width:100%;border-radius:4px;display:block;margin:0 auto 4px;}
+  .img-opt.selected{border-color:var(--blue);}
+  .single-img{max-width:100%;border-radius:8px;margin-bottom:10px;display:block;}
+  .row-actions{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;}
+  .btn{background:linear-gradient(135deg,var(--purple),var(--accent));color:#fff;border:none;border-radius:6px;padding:8px 14px;font-size:13px;cursor:pointer;}
+  .btn:hover{opacity:.92;}
+  .btn.secondary{background:#95a5a6;}
+  .btn.submit{background:var(--green);}
+  .feedback{margin-top:8px;font-size:13px;padding:8px 10px;border-radius:6px;}
+  .feedback.ok{background:#e8f8ef;color:#1e8449;}
+  .feedback.bad{background:#fdecea;color:#c0392b;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .chip{border:1px solid var(--line);background:var(--soft);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:15px;}
+  .chip.used{opacity:.35;pointer-events:none;}
+  .answer-line{min-height:38px;border:1px dashed #c9b8dd;border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:16px;background:var(--soft);}
+  textarea, input[type=text]{width:100%;font-size:14px;padding:8px 9px;border:1px solid var(--line);border-radius:6px;font-family:inherit;}
+  textarea{min-height:60px;resize:vertical;}
+  .hint{font-size:12px;color:var(--muted);margin-top:4px;}
+  .pinyin-hint{color:var(--accent-dark);font-style:italic;margin-bottom:8px;}
+  .note-box{background:#fdf3e3;border:1px solid #e8d68a;color:#6b5200;border-radius:8px;padding:10px 12px;font-size:12.5px;margin-bottom:14px;}
+  .flash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:10px;}
+  .flash{border:1px solid var(--line);border-radius:8px;padding:14px 8px;text-align:center;cursor:pointer;background:var(--soft);min-height:90px;
+    display:flex;align-items:center;justify-content:center;}
+  .flash .hz{font-size:26px;}
+  .flash .vi{font-size:12px;color:var(--muted);display:none;}
+  .flash.flipped .hz{display:none;}
+  .flash.flipped .vi{display:block;}
+  .flash.flipped{background:#f0e9fb;}
+  .match-wrap{display:flex;gap:16px;margin-bottom:10px;}
+  .match-col{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;}
+  .match-item{border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer;background:var(--soft);text-align:center;font-size:15px;}
+  .match-item .hz{font-size:22px;}
+  .match-item .py{font-size:11px;color:var(--accent-dark);font-style:italic;margin-top:2px;}
+  .match-item.picked{border-color:var(--blue);background:#f0e9fb;}
+  .match-item.matched{border-color:var(--green);background:#e8f8ef;color:#1e8449;cursor:default;font-weight:bold;}
+  .match-item.wrong{border-color:#c0392b;background:#fdecea;}
+  audio{width:100%;max-width:360px;height:36px;}
+  .status-banner{padding:10px 24px;font-size:13px;}
+  .status-banner.err{background:#fdecea;color:#c0392b;}
+  .status-banner.loading{background:#fdf3e3;color:#6b5200;}
+  .submit-box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:20px;
+    box-shadow:0 2px 10px rgba(74,36,114,.07);}
+  .submit-box label{display:block;font-size:12px;color:var(--muted);margin:8px 0 4px;}
+  .level-label{display:block;font-size:10.5px;color:#d9c3f0;text-transform:uppercase;letter-spacing:.5px;margin-top:12px;}
+  .level-select{width:100%;margin-top:5px;font-size:13px;padding:6px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.25);
+    background:rgba(255,255,255,.08);color:#fff;}
+  .level-select option{color:#2c2c2c;}
 
-  /* ===== Lesson list screen ===== */
-  .lesson-list{display:flex;flex-direction:column;gap:10px;}
-  .lesson-card{display:flex;align-items:center;gap:14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;cursor:pointer;transition:all .18s;background:var(--white);}
-  .lesson-card:hover{border-color:var(--red);background:var(--red-pale);transform:translateY(-2px);box-shadow:var(--shadow);}
-  .lesson-card.selected{border-color:var(--red);background:var(--red-pale);box-shadow:0 0 0 3px rgba(124,58,237,.15);}
-  .lesson-card.selected .lesson-num{background:var(--red);color:#fff;}
-  .lesson-num{width:40px;height:40px;border-radius:50%;background:var(--red-pale);color:var(--red-dk);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0;}
-  .lesson-info{flex:1;min-width:0;}
-  .lesson-title{font-weight:700;font-size:14px;color:#1f2937;}
-  .lesson-sub{font-size:11px;color:var(--gray);margin-top:2px;}
-  .lesson-arrow{color:var(--red);font-size:18px;flex-shrink:0;}
-  .back-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-  .back-btn{background:none;border:none;color:var(--red-dk);font-weight:700;font-size:13px;cursor:pointer;padding:6px 0;}
-  .empty-box{text-align:center;padding:50px 20px;color:var(--gray);font-size:14px;}
-
-  /* ===== Activity runner ===== */
-  .act-topbar{background:linear-gradient(135deg,var(--red-dk) 0%,var(--red) 100%);padding:14px 20px 12px;}
-  .act-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .act-pill{font-size:12px;font-weight:800;color:#fff;background:rgba(255,255,255,.18);border-radius:99px;padding:4px 12px;letter-spacing:.3px;}
-  .act-steps{display:flex;gap:5px;}
-  .act-step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);transition:all .2s;}
-  .act-step-dot.done{background:#fff;}
-  .act-step-dot.active{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.35);}
-  .act-student-info{margin-top:4px;font-size:11px;color:rgba(255,255,255,.75);}
-  .act-type-label{font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-
-  /* Sentence order */
-  .sentord-answer{min-height:52px;border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:10px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:8px;margin-bottom:16px;background:var(--off-white);}
-  .sentord-pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
-  .word-tok{padding:8px 14px;border-radius:99px;border:1.5px solid var(--border);background:#fff;font-size:15px;font-weight:600;cursor:pointer;color:#374151;transition:all .15s;text-align:center;}
-  .word-tok:hover{border-color:var(--red);color:var(--red-dk);}
-  .word-tok.used{opacity:.3;pointer-events:none;}
-  .tok-py{display:block;font-size:11px;font-weight:400;color:var(--gray);line-height:1.2;margin-bottom:1px;}
-  .tok-hanzi{display:block;}
-  .hanzi-pinyin{display:block;font-size:13px;font-weight:400;color:var(--gray);margin-top:2px;}
-
-  /* Translate / writing text inputs */
-  .translate-input,.writing-input{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;background:var(--off-white);margin-bottom:14px;}
-  .translate-input:focus,.writing-input:focus{border-color:var(--red);background:#fff;}
-  textarea.writing-input{min-height:90px;resize:vertical;}
-
-  /* Result breakdown */
-  .result-section{margin-bottom:20px;}
-  .result-section-title{font-size:12px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
-  .result-bar-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;}
-  .result-bar-row:last-child{border-bottom:none;}
-  .result-bar-icon{font-size:16px;flex-shrink:0;}
-  .result-bar-label{flex:1;color:#374151;font-weight:600;}
-  .result-bar-score{font-weight:800;color:var(--red-dk);flex-shrink:0;}
-  .writing-review{background:var(--off-white);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px;font-size:13px;}
-  .writing-review .w-word{font-weight:700;color:var(--red-dk);margin-bottom:3px;}
-  .writing-review .w-hint{color:var(--gray);font-size:11px;margin-bottom:6px;}
-  .writing-review .w-answer{color:#374151;white-space:pre-wrap;}
-
-  /* ===== Nghe / Đọc (listen1, listen2, read) — nhóm câu dùng chung audio/ảnh ===== */
-  .group-media{background:var(--off-white);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px;margin-bottom:18px;text-align:center;}
-  .group-media audio{width:100%;}
-  .group-media img{max-width:100%;border-radius:var(--radius-sm);display:block;margin:0 auto;}
-  .group-media-label{font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
-  .group-hint{font-size:11px;color:var(--gray);margin-top:8px;}
-  .subq-block{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px;margin-bottom:12px;background:var(--white);}
-  .subq-num{font-size:11px;font-weight:800;color:var(--red-dk);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;}
-  .subq-img-choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
-  .subq-img-choice{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px;cursor:pointer;text-align:center;transition:all .15s;background:var(--white);}
-  .subq-img-choice:hover:not(.locked){border-color:var(--red);}
-  .subq-img-choice img{width:100%;border-radius:6px;display:block;margin-bottom:6px;}
-  .subq-img-choice .badge{display:inline-block;min-width:24px;height:24px;line-height:24px;border-radius:50%;background:var(--gray-lt);font-size:11px;font-weight:800;color:#6b7280;}
-  .subq-img-choice.selected{border-color:var(--red);background:var(--red-pale);}
-  .subq-img-choice.selected .badge{background:var(--red);color:#fff;}
-  .subq-img-choice.correct{border-color:#16a34a;background:#f0fdf4;}
-  .subq-img-choice.correct .badge{background:#16a34a;color:#fff;}
-  .subq-img-choice.wrong{border-color:#ef4444;background:#fef2f2;}
-  .subq-img-choice.wrong .badge{background:#ef4444;color:#fff;}
-  .subq-img-choice.locked{cursor:default;}
-  .subq-letter-choices,.subq-tf-choices{display:flex;gap:8px;flex-wrap:wrap;}
-  .subq-letter,.subq-tf{flex:1;min-width:60px;padding:11px 10px;border-radius:var(--radius-sm);border:1.5px solid var(--border);cursor:pointer;text-align:center;font-weight:800;font-size:14px;color:#374151;background:var(--white);transition:all .15s;}
-  .subq-letter:hover:not(.locked),.subq-tf:hover:not(.locked){border-color:var(--red);background:var(--red-pale);color:var(--red-dk);}
-  .subq-letter.selected,.subq-tf.selected{border-color:var(--red);background:var(--red-pale);color:var(--red-dk);}
-  .subq-letter.correct,.subq-tf.correct{border-color:#16a34a;background:#f0fdf4;color:#15803d;}
-  .subq-letter.wrong,.subq-tf.wrong{border-color:#ef4444;background:#fef2f2;color:#b91c1c;}
-  .subq-letter.locked,.subq-tf.locked{cursor:default;}
-  .subq-fb{margin-top:8px;font-size:12px;font-weight:700;display:none;}
-  .subq-fb.correct{color:#15803d;display:block;}
-  .subq-fb.wrong{color:#b91c1c;display:block;}
+  /* ===== Trang mở đầu: chọn cấp độ + nhập thông tin học viên ===== */
+  #landingScreen{min-height:100vh;background:#eee9f5;display:flex;flex-direction:column;align-items:center;}
+  .landing-banner{width:100%;background:linear-gradient(135deg,var(--purple),var(--accent));color:#fff;
+    text-align:center;padding:36px 20px 46px;position:relative;overflow:hidden;}
+  .landing-banner::before{content:"";position:absolute;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.14) 2px, transparent 2px);
+    background-size:26px 26px;}
+  .landing-banner-inner{position:relative;}
+  .landing-brand{font-size:26px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+  .landing-brand-cn{font-size:15px;margin-top:6px;color:#eadcfb;}
+  .landing-brand-sub{font-size:13px;margin-top:6px;color:#eadcfb;}
+  .landing-divider-dot{width:60px;height:3px;background:#fff;opacity:.6;border-radius:3px;margin:14px auto 0;}
+  .landing-card{width:100%;max-width:640px;background:#fff;border-radius:14px;box-shadow:0 6px 24px rgba(74,36,114,.18);
+    padding:26px 24px 30px;margin:-28px 16px 32px;position:relative;}
+  .landing-section-title{font-size:14px;font-weight:bold;color:var(--purple);margin:0 0 14px;padding-left:10px;
+    border-left:4px solid var(--accent);text-transform:uppercase;letter-spacing:.4px;}
+  .level-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+  .level-card{border:2px solid #e4dcf0;border-radius:10px;padding:16px 10px;text-align:center;cursor:pointer;background:#fbfaff;}
+  .level-card:hover{border-color:#c9a3ec;}
+  .level-card.selected{border-color:var(--accent);background:#f3ebfc;box-shadow:0 0 0 3px rgba(124,58,237,.15);}
+  .level-card .icon{font-size:28px;line-height:1;}
+  .level-card .name{font-weight:bold;font-size:15px;color:var(--ink);margin-top:6px;}
+  .level-card .cn{font-size:12px;color:var(--accent);margin-top:2px;}
+  .landing-hr{border:none;border-top:1px dashed #e0d8ec;margin:6px 0 20px;}
+  .landing-field{margin-bottom:16px;}
+  .landing-field label{display:block;font-size:12px;font-weight:bold;color:var(--muted);margin-bottom:6px;letter-spacing:.3px;text-transform:uppercase;}
+  .landing-field label .req{color:var(--red);margin-left:2px;}
+  .landing-field input{width:100%;font-size:14px;padding:11px 12px;border:1px solid #e0d8ec;border-radius:8px;
+    background:#fbfaff;font-family:inherit;}
+  .landing-hint{font-size:11.5px;color:var(--muted);margin-top:5px;}
+  .landing-error{font-size:12.5px;color:var(--red);margin:-6px 0 14px;display:none;}
+  .landing-start-btn{width:100%;background:linear-gradient(135deg,var(--purple),var(--accent));color:#fff;border:none;
+    border-radius:9px;padding:14px;font-size:15px;font-weight:bold;cursor:pointer;letter-spacing:.3px;}
+  .landing-start-btn:hover{opacity:.92;}
+  #appShell{display:none;}
+  @media(max-width:820px){
+    .app-shell{flex-direction:column;height:auto;overflow:visible;}
+    .sidebar{width:100%;flex:none;max-height:220px;}
+    main{max-width:none;}
+    .img-grid{grid-template-columns:1fr;}
+    .match-wrap{flex-direction:column;}
+  }
 </style>
 </head>
 <body>
 
-<div class="hero"><div class="hero-inner">
-  <div class="hero-title">TIẾNG TRUNG THẢO NGUYÊN</div>
-  <div class="hero-cn">草原汉语课堂</div>
-  <div class="hero-sub">Luyện tập YCT — Nghe · Đọc · Từ vựng · Viết</div>
-  <div class="hero-divider"></div>
-</div></div>
-
-<div class="main"><div class="card">
-
-  <!-- SCREEN 1: Trang chủ -->
-  <div class="screen active" id="screen-home">
-    <div class="card-body">
-      <div class="section-title">Chọn cấp độ</div>
-      <div class="level-grid" id="level-grid"></div>
-      <div class="error-level" id="err-level">⚠ Vui lòng chọn cấp độ trước khi bắt đầu.</div>
-      <hr class="form-divider">
-      <div class="section-title">Thông tin học viên</div>
-      <div class="form-row">
-        <label for="inp-name">Họ và tên <span style="color:var(--red)">*</span></label>
-        <input id="inp-name" type="text" placeholder="VD: Nguyễn Thị Lan" autocomplete="name">
-        <div class="error-msg" id="err-name">Vui lòng nhập họ và tên.</div>
-      </div>
-      <div class="form-row">
-        <label for="inp-class">Mã lớp <span style="color:var(--red)">*</span></label>
-        <input id="inp-class" type="text" placeholder="VD: YCT2-T2" oninput="this.value=this.value.toUpperCase()">
-        <div class="hint">Nhận mã lớp từ giáo viên (VD: YCT1-T2, YCT2-T6…)</div>
-        <div class="error-msg" id="err-class">Vui lòng nhập mã lớp đúng định dạng.</div>
-      </div>
-      <button class="btn btn-primary btn-full" style="margin-top:6px" onclick="goToLessons()">
-        开始 &nbsp;Xem danh sách bài học →
-      </button>
+<div id="landingScreen">
+  <div class="landing-banner">
+    <div class="landing-banner-inner">
+      <div class="landing-brand">Tiếng Trung Thảo Nguyên</div>
+      <div class="landing-brand-cn">草原汉语课堂</div>
+      <div class="landing-brand-sub">Luyện tập YCT — Nghe · Đọc · Từ vựng · Viết</div>
+      <div class="landing-divider-dot"></div>
     </div>
   </div>
+  <div class="landing-card">
+    <div class="landing-section-title">Chọn cấp độ</div>
+    <div class="level-grid" id="landingLevelGrid"></div>
 
-  <!-- SCREEN 2: Danh sách bài học -->
-  <div class="screen" id="screen-lessons">
-    <div class="card-body">
-      <div class="back-row">
-        <button class="back-btn" onclick="goHome()">← Đổi cấp độ</button>
-      </div>
-      <div class="section-title" id="lessons-title">Chọn bài học</div>
-      <div class="lesson-list" id="lesson-list"></div>
-      <div class="empty-box" id="lessons-empty" style="display:none">Cấp độ này chưa có bài học nào. Vui lòng liên hệ giáo viên.</div>
-      <button class="btn btn-primary btn-full" id="btn-start-lesson" style="margin-top:16px" disabled onclick="startSelectedLesson()">Bắt đầu làm bài →</button>
+    <hr class="landing-hr">
+
+    <div class="landing-section-title">Thông tin học viên</div>
+    <div class="landing-field">
+      <label for="landingName">Họ và tên<span class="req">*</span></label>
+      <input type="text" id="landingName" placeholder="VD: Nguyễn Thị Lan">
     </div>
+    <div class="landing-field">
+      <label for="landingClass">Mã lớp<span class="req">*</span></label>
+      <input type="text" id="landingClass" placeholder="VD: YCT2-T2">
+      <div class="landing-hint">Nhận mã lớp từ giáo viên (VD: YCT1-T2, YCT2-T6...)</div>
+    </div>
+    <div class="landing-error" id="landingError">Vui lòng chọn cấp độ và nhập đủ họ tên, mã lớp.</div>
+    <button class="landing-start-btn" onclick="startFromLanding()">开始 Xem danh sách bài học →</button>
   </div>
+</div>
 
-  <!-- SCREEN 3: Loading -->
-  <div class="screen" id="screen-loading">
-    <div class="card-body">
-      <div class="loading-box">
-        <div class="spinner"></div>
-        <div class="loading-text" id="loading-msg">Đang tải dữ liệu…</div>
-      </div>
+<div class="app-shell" id="appShell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">Tiếng Trung Thảo Nguyên</div>
+      <div class="brand-sub">Luyện tập YCT — Nghe · Đọc · Từ vựng · Viết</div>
+      <label class="level-label" for="levelSelect">Đổi cấp độ</label>
+      <select id="levelSelect" class="level-select"></select>
     </div>
+    <div class="course-title">Chọn bài học</div>
+    <div id="lessonList" style="padding:8px 0;">Đang tải danh sách bài...</div>
+  </aside>
+  <div class="main-wrap">
+    <div class="top-bar">
+      <h1 id="topTitle">Tiếng Trung Thảo Nguyên</h1>
+      <p id="topSub">Đang tải dữ liệu từ Google Sheet...</p>
+    </div>
+    <main id="main"></main>
   </div>
-
-  <!-- SCREEN 4: Làm bài (các dạng bài tuần tự) -->
-  <div class="screen" id="screen-activity">
-    <div class="act-topbar">
-      <div class="act-title-row">
-        <span class="act-pill" id="act-pill">YCT 2 · Bài 1</span>
-        <div class="act-steps" id="act-steps"></div>
-      </div>
-      <div class="act-student-info" id="act-student-info"></div>
-    </div>
-    <div class="progress-wrap">
-      <div class="progress-row">
-        <span id="act-prog-text">Câu 1 / 10</span>
-        <span id="act-prog-pct">0%</span>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" id="act-prog-fill" style="width:0%"></div></div>
-    </div>
-    <div class="quiz-body" id="act-body"></div>
-  </div>
-
-  <!-- SCREEN 5: Kết quả -->
-  <div class="screen" id="screen-result">
-    <div class="result-hero">
-      <div class="score-ring">
-        <div class="score-big" id="res-score">0</div>
-        <div class="score-denom">/ <span id="res-total">0</span> điểm</div>
-      </div>
-      <div class="result-grade" id="res-grade">–</div>
-      <div class="result-info" id="res-info"></div>
-    </div>
-    <div class="result-body">
-      <div class="result-section">
-        <div class="result-section-title">Kết quả từng dạng bài</div>
-        <div id="res-breakdown"></div>
-      </div>
-      <div class="result-section" id="res-writing-wrap" style="display:none">
-        <div class="result-section-title">✍️ Bài đặt câu (giáo viên sẽ chấm)</div>
-        <div id="res-writing"></div>
-      </div>
-      <button class="btn btn-success btn-full" id="btn-submit" onclick="submitResult()">
-        ☁ Gửi kết quả lên bảng điểm
-      </button>
-      <div class="submit-status" id="submit-status"></div>
-      <div class="result-divider"></div>
-      <button class="btn btn-outline btn-full" onclick="goHome()">← Về trang chủ</button>
-    </div>
-  </div>
-
-</div></div>
-<div class="footer">© Tiếng Trung Thảo Nguyên – 草原汉语课堂</div>
+</div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// CẤU HÌNH CẤP ĐỘ — mỗi cấp YCT 1 link Apps Script riêng (đọc + ghi dữ liệu
-// Google Sheet của đúng cấp đó). Thêm cấp mới thì thêm 1 dòng vào cả 2 object
-// bên dưới (YCT_URL và YCT_LABEL), rồi thêm 1 .level-card tương ứng sẽ được
-// tự tạo ra trong renderLevelGrid() dựa trên YCT_LABEL.
-// ═══════════════════════════════════════════════════════
-// Điền Web App URL cho từng cấp sau khi deploy Apps Script trên đúng Sheet
-// của cấp đó (xem hướng dẫn ở đầu Code.gs). Cấp nào chưa deploy thì để
-// nguyên placeholder — thẻ cấp đó vẫn hiện trên trang chủ nhưng bấm vào sẽ
-// báo lỗi tải dữ liệu (không ảnh hưởng các cấp đã deploy xong).
-const YCT_URL = {
-  YCT1: "https://script.google.com/macros/s/AKfycbw3Fl2Th0-_PbUDquu_lwGz0kCiAfwsZ1Wu6nEaHdp-EiNSGF9vZ81bEh6Z78PnoRTX/exec",
-  YCT2: "https://script.google.com/macros/s/AKfycbzPOVUhUQCGrYswKlsgmlY7TRxT5s9myrhWXlsuWqN8f_51PnZPRuSQ_cDu9UJyGwvj/exec",
-  YCT3: "https://script.google.com/macros/s/AKfycbx2LFoaGmJhiyZgF3ASnN5fQXlTVBv_-6iu7498_8IN2JP0-IHa7g4KVOLEhWiEwAAN/exec",
+// ===================== CẤU HÌNH =====================
+// Mỗi cấp YCT1–YCT6 là 1 Google Sheet riêng => 1 lần Deploy Apps Script (Code.gs)
+// riêng => 1 Web app URL riêng. Dán từng URL vào đúng ô cấp độ tương ứng bên dưới.
+// Dạng: https://script.google.com/macros/s/AKfycb..../exec
+const LEVELS = [
+  { key: 'YCT1', label: 'YCT 1', icon: '🌱', cn: '一级' },
+  { key: 'YCT2', label: 'YCT 2', icon: '📗', cn: '二级' },
+  { key: 'YCT3', label: 'YCT 3', icon: '📘', cn: '三级' },
+  { key: 'YCT4', label: 'YCT 4', icon: '📙', cn: '四级' },
+  { key: 'YCT5', label: 'YCT 5', icon: '🥈', cn: '五级' },
+  { key: 'YCT6', label: 'YCT 6', icon: '🏆', cn: '六级' }
+];
+const APPS_SCRIPT_URLS = {
+  YCT1: "https://script.google.com/macros/s/AKfycbw3Fl2Th0-PbUDquu_lwGz0kCiAfwsZ1Wu6nEaHdp-EiNSGF9vZ81bEh6Z78PnoRTX/exec",
+  YCT2: "https://script.google.com/macros/s/AKfycbxMMqoZLtdSRQpuj2o6vMMnkwZycmPCOnMr_Eww5MPAhdqklOYFy8rbR2YZ7vqkXw7UGg/exec",
+  YCT3: "https://script.google.com/macros/s/AKfycbx2LFoaGmJhiyZgF3ASnN5fQXlTVBv-6iu7498_8IN2JP0-IHa7g4KVOLEhWiEwAAN/exec",
   YCT4: "https://script.google.com/macros/s/AKfycbyFz9_ra0eitqLTxLQnfFIaHIQ7Gf5F4h4PEWLvlNnXvdm1VLCobiHCyiS4VaIpNznC/exec",
   YCT5: "https://script.google.com/macros/s/AKfycbx-zk4lieylSLJAXnh-OCqiQHo-mkttqb7s8bhC5OKdb-x3BKAYVTD_nmXGcr-HNP3g0A/exec",
   YCT6: "https://script.google.com/macros/s/AKfycbyc3ne-tGuG42ASxc6jssoGAKcCXmipF0-aaeQwOrrPTeKnq45kEADBbG7kYpYYDvVrtw/exec"
 };
-const YCT_LABEL = { YCT1:"YCT 1", YCT2:"YCT 2", YCT3:"YCT 3", YCT4:"YCT 4", YCT5:"YCT 5", YCT6:"YCT 6" };
-const YCT_HANZI = { YCT1:"一级", YCT2:"二级", YCT3:"三级", YCT4:"四级", YCT5:"五级", YCT6:"六级" };
-const YCT_ICON  = { YCT1:"🌱", YCT2:"📗", YCT3:"📘", YCT4:"📙", YCT5:"🏅", YCT6:"🏆" };
-const LABELS = ["A","B","C","D"];
 
-// Định nghĩa các dạng bài, theo đúng tên sheet trong Google Sheet:
-// words_<LEVEL>, listen1_<LEVEL>, listen2_<LEVEL>, Read_<LEVEL>,
-// sentence_order_<LEVEL>, translate_<LEVEL>, writing_<LEVEL>
-const ACT_DEFS = [
-  {key:"words",          type:"word_matching", label:"Nối từ",             icon:"🔤"},
-  {key:"listen1",        type:"listen_mc",     label:"Nghe chọn đáp án",   icon:"🎧"},
-  {key:"listen2",        type:"listen_tf",     label:"Nghe đúng / sai",    icon:"👂"},
-  {key:"read",           type:"reading_mc",    label:"Đọc hiểu",           icon:"📖"},
-  {key:"sentence_order", type:"sentence_order",label:"Sắp xếp câu",        icon:"🧩"},
-  {key:"translate",      type:"translate",     label:"Dịch câu",           icon:"🌐"},
-  {key:"writing",        type:"writing",       label:"Đặt câu",            icon:"✍️"}
-];
+// ===================== STATE =====================
+let DATA = null;
+let state = { level: LEVELS[0].key, lesson: null, answers: {} };
+let student = { hoTen: '', lop: '' };
 
-// Tổng điểm tự động chấm = 100, chia đều cho các dạng có đáp án đúng/sai rõ
-// ràng. "Đặt câu" là bài viết tự do, máy không có đáp án để so sánh nên
-// không nằm trong 100 điểm này — giáo viên chấm tay riêng.
-const SCORE_WEIGHTS = { word_matching:1, listen_mc:1, listen_tf:1, reading_mc:1, sentence_order:1, translate:1 };
-
-let level="", name="", cls="";
-let levelData = null;
-let currentLesson = null;
-let activities = [];
-let actIndex = 0;
-let itemIndex = 0;
-let results = {};
-let sentordBuilt = [];
-let sentordPoolUsed = [];
-let sentordSubmitted = false;
-let translatePunctPenalty = 0;
-
-function show(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  window.scrollTo({top:0,behavior:"smooth"});
+// ===================== TRANG MỞ ĐẦU (chọn cấp + thông tin học viên) =====================
+let landingSelectedLevel = null;
+function buildLandingGrid(){
+  const grid = document.getElementById('landingLevelGrid');
+  grid.innerHTML = LEVELS.map(l => `
+    <div class="level-card" data-key="${l.key}" onclick="selectLandingLevel('${l.key}')">
+      <div class="icon">${l.icon}</div>
+      <div class="name">${l.label}</div>
+      <div class="cn">${l.cn}</div>
+    </div>`).join('');
 }
-
-// ───────────────────────────────────────────────────────
-// CHỌN CẤP ĐỘ — vẽ động các thẻ cấp độ từ YCT_URL đã khai báo
-// ───────────────────────────────────────────────────────
-function renderLevelGrid(){
-  const grid = document.getElementById("level-grid");
-  grid.innerHTML = "";
-  Object.keys(YCT_URL).forEach(l=>{
-    const div = document.createElement("div");
-    div.className = "level-card "+l.toLowerCase();
-    div.onclick = () => selectLevel(l);
-    div.innerHTML =
-      '<span class="level-icon">'+(YCT_ICON[l]||"📘")+'</span>'+
-      '<div class="level-name">'+(YCT_LABEL[l]||l)+'</div>'+
-      '<div class="level-hanzi">'+(YCT_HANZI[l]||"")+'</div>';
-    grid.appendChild(div);
+function selectLandingLevel(key){
+  landingSelectedLevel = key;
+  document.querySelectorAll('#landingLevelGrid .level-card').forEach(el => {
+    el.classList.toggle('selected', el.dataset.key === key);
   });
 }
-function selectLevel(l){
-  level=l;
-  document.querySelectorAll(".level-card").forEach(el=>el.classList.remove("selected"));
-  document.querySelector(".level-card."+l.toLowerCase()).classList.add("selected");
-  document.getElementById("err-level").style.display="none";
-}
-
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-
-// ── Chuyển link Google Drive "view" thành link nhúng trực tiếp được ──
-// Sheet dùng link kiểu drive.google.com/file/d/FILEID/view?usp=sharing —
-// link này KHÔNG dùng trực tiếp được trong <img>/<audio> (Drive trả về 1
-// trang xem trước, không phải file thô). Hàm này tách FILEID rồi đổi sang
-// endpoint nhúng được. Nếu link không phải Drive (VD Cloudinary) thì giữ
-// nguyên, không đổi gì.
-function driveDirectUrl(url, kind){
-  const u = String(url||"").trim();
-  if(!u) return "";
-  const m = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-  if(!m) return u; // không phải link Drive dạng nhận diện được → để nguyên (VD Cloudinary)
-  const id = m[1];
-  if(kind === "image") return "https://drive.google.com/thumbnail?id="+id+"&sz=w1000";
-  // Audio: Drive không có endpoint stream chính thức ổn định — dùng uc?export=download.
-  // Với file audio nhỏ (vài MB) thường phát được thẳng; file lớn hơn có thể bị Drive
-  // chặn bởi trang xác nhận "không quét virus được". Nếu học sinh báo lỗi không nghe
-  // được, nên chuyển audio đó sang Cloudinary (ổn định hơn nhiều cho audio).
-  return "https://drive.google.com/uc?export=download&id="+id;
-}
-
-// Lấy 1 mảng từ JSON trả về, hỗ trợ nhiều kiểu tên field mà Apps Script có thể trả
-function pickArr(data, base){
-  if(Array.isArray(data[base])) return data[base];
-  const alt = base + "_" + level;
-  if(Array.isArray(data[alt])) return data[alt];
-  const foundKey = Object.keys(data).find(k => k.toLowerCase() === base.toLowerCase() || k.toLowerCase() === alt.toLowerCase());
-  return foundKey && Array.isArray(data[foundKey]) ? data[foundKey] : [];
-}
-
-function normalizeLessonKey(v){
-  const s = String(v ?? "").trim();
-  const m = s.match(/\d+/);
-  if(m) return String(parseInt(m[0], 10));
-  return s.toLowerCase();
-}
-function lessonSortValue(v){
-  const n = parseInt(normalizeLessonKey(v), 10);
-  return isNaN(n) ? Number.MAX_SAFE_INTEGER : n;
-}
-function filterByLesson(arr, lessonNum){
-  const target = normalizeLessonKey(lessonNum);
-  return arr.filter(r => normalizeLessonKey(r.lesson ?? r.Lesson ?? r.LESSON ?? "") === target);
-}
-
-// ───────────────────────────────────────────────────────
-// BƯỚC 1: Chọn cấp độ + điền thông tin → tải toàn bộ dữ liệu, hiện bài học
-// ───────────────────────────────────────────────────────
-async function goToLessons(){
-  const n=document.getElementById("inp-name").value.trim();
-  const c=document.getElementById("inp-class").value.trim().toUpperCase();
-  let ok=true;
-  ["err-name","err-class","err-level"].forEach(id=>document.getElementById(id).style.display="none");
-  if(!n){document.getElementById("err-name").style.display="block";ok=false;}
-  if(!c){document.getElementById("err-class").style.display="block";ok=false;}
-  if(!level){document.getElementById("err-level").style.display="block";ok=false;}
-  if(!ok)return;
-  name=n; cls=c;
-
-  show("screen-loading");
-  document.getElementById("loading-msg").textContent="Đang tải danh sách bài học "+(YCT_LABEL[level]||level)+"…";
-  try{
-    const url = YCT_URL[level] + "?action=getData&level=" + level;
-    const res  = await fetch(url);
-    const data = await res.json();
-    levelData = data;
-    renderLessonList();
-    show("screen-lessons");
-  }catch(e){
-    document.getElementById("loading-msg").innerHTML =
-      '❌ Không tải được dữ liệu.<br><small style="color:#aaa">'+e.message+'</small><br><br>'+
-      '<button class="btn btn-outline" onclick="goHome()">← Thử lại</button>';
-  }
-}
-
-function renderLessonList(){
-  document.getElementById("lessons-title").textContent = "Chọn bài học — " + (YCT_LABEL[level]||level);
-  let lessons = pickArr(levelData, "lessons");
-  if(!lessons.length){
-    const seen = new Map();
-    ACT_DEFS.forEach(d=>{
-      pickArr(levelData, d.key).forEach(r=>{
-        const key = normalizeLessonKey(r.lesson ?? r.Lesson ?? "");
-        if(key && !seen.has(key)) seen.set(key, key);
-      });
-    });
-    lessons = [...seen.values()].sort((a,b)=>lessonSortValue(a)-lessonSortValue(b)).map(n=>({lesson:n,title:""}));
-  } else {
-    lessons = [...lessons].sort((a,b)=>lessonSortValue(a.lesson)-lessonSortValue(b.lesson));
-  }
-  const listEl = document.getElementById("lesson-list");
-  const emptyEl = document.getElementById("lessons-empty");
-  const startBtn = document.getElementById("btn-start-lesson");
-  listEl.innerHTML = "";
-  chosenLesson = null;
-  startBtn.disabled = true;
-
-  // Đếm số dạng bài tập THỰC SỰ dùng được (đã qua cleanItems, khớp đúng cách
-  // tính của selectLesson) — bài nào 0 dạng (chưa có nội dung hợp lệ) thì bỏ
-  // qua hẳn, không hiện trong danh sách, để tránh học sinh bấm vào bài trống.
-  const lessonsWithContent = lessons
-    .map(l => {
-      const countTypes = ACT_DEFS.filter(d => {
-        const raw = filterByLesson(pickArr(levelData, d.key), l.lesson);
-        return cleanItems(d.type, raw).length > 0;
-      }).length;
-      return {l, countTypes};
-    })
-    .filter(x => x.countTypes > 0);
-
-  startBtn.style.display = lessonsWithContent.length ? "inline-flex" : "none";
-  if(!lessonsWithContent.length){ emptyEl.style.display="block"; return; }
-  emptyEl.style.display="none";
-  lessonsWithContent.forEach(({l, countTypes})=>{
-    const div = document.createElement("div");
-    div.className = "lesson-card";
-    div.innerHTML =
-      '<div class="lesson-num">'+l.lesson+'</div>'+
-      '<div class="lesson-info">'+
-        '<div class="lesson-title">Bài '+l.lesson+(l.title?': '+l.title:'')+'</div>'+
-        '<div class="lesson-sub">'+countTypes+' dạng bài tập</div>'+
-      '</div>'+
-      '<div class="lesson-arrow">→</div>';
-    div.onclick = () => {
-      document.querySelectorAll("#lesson-list .lesson-card").forEach(c=>c.classList.remove("selected"));
-      div.classList.add("selected");
-      chosenLesson = l;
-      startBtn.disabled = false;
-    };
-    listEl.appendChild(div);
-  });
-}
-let chosenLesson = null;
-function startSelectedLesson(){
-  if(!chosenLesson) return;
-  selectLesson(chosenLesson);
-}
-
-// ───────────────────────────────────────────────────────
-// BƯỚC 2: Chọn 1 bài học → dựng chuỗi các hoạt động, bắt đầu làm bài
-// ───────────────────────────────────────────────────────
-// Với listen1 / listen2 / read: nhiều câu (STT) có thể dùng chung 1 audio
-// (cùng "track") hoặc chung 1 ảnh (đọc hiểu) — nhóm các câu đó lại để hiện
-// chung trên 1 màn hình (giống điều kiện thi thật: nghe/đọc 1 lần, trả lời
-// nhiều câu liên tiếp), thay vì mỗi câu 1 màn hình riêng.
-function groupByKey(rows, fields){
-  const groups = []; const map = new Map();
-  rows.forEach((r,idx)=>{
-    let key = "";
-    for(const f of fields){ if(r[f] && String(r[f]).trim()){ key = String(r[f]).trim(); break; } }
-    if(!key) key = "__row_"+idx;
-    if(!map.has(key)){ const g = {key, rows:[]}; map.set(key,g); groups.push(g); }
-    map.get(key).rows.push(r);
-  });
-  groups.forEach(g => g.rows.sort((a,b)=> (parseInt(a.stt,10)||0) - (parseInt(b.stt,10)||0)));
-  return groups;
-}
-
-function cleanItems(type, items){
-  switch(type){
-    case "word_matching": return items.filter(r => String(r.hanzi || r.word || "").trim() && String(r.vietnamese || r.nghia || "").trim());
-    case "listen_mc":     return items.filter(r => {
-      if(!String(r.link_audio||"").trim() || !String(r.dap_an_dung||"").trim()) return false;
-      const isTF = ["dung","sai"].includes(normLoose(r.dap_an_dung));
-      // Câu Đúng/Sai không bắt buộc phải có ảnh; câu chọn A-D vẫn cần ít nhất 1 ảnh.
-      return isTF || (r.anh_a||r.anh_b||r.anh_c||r.anh_d);
-    });
-    case "listen_tf":     return items.filter(r => String(r.link_audio||"").trim() && String(r.link_anh||"").trim() && String(r.dap_an||"").trim());
-    case "reading_mc":    return items.filter(r => String(r.link_anh||"").trim() && String(r.dap_an_dung||"").trim());
-    case "sentence_order":return items.filter(r => String(r.answer || "").trim());
-    case "translate":     return items.filter(r => String(r.vietnamese || "").trim() && String(r.chinese || "").trim());
-    case "writing":       return items.filter(r => String(r.word || "").trim());
-    default:              return items;
-  }
-}
-
-// Với các dạng nhóm-theo-audio/ảnh, act.items sẽ là mảng các NHÓM (mỗi nhóm
-// gồm nhiều câu con), không phải mảng câu hỏi phẳng như các dạng khác.
-function buildActivityItems(type, cleaned){
-  if(type === "listen_mc" || type === "listen_tf") return groupByKey(cleaned, ["track","link_audio"]);
-  if(type === "reading_mc") return groupByKey(cleaned, ["link_anh"]);
-  return cleaned;
-}
-function countQuestions(type, items){
-  if(type === "listen_mc" || type === "listen_tf" || type === "reading_mc"){
-    return items.reduce((s,g)=>s+g.rows.length, 0);
-  }
-  return items.length;
-}
-
-function selectLesson(lessonObj){
-  currentLesson = lessonObj;
-  activities = ACT_DEFS.map(def => {
-    const raw = filterByLesson(pickArr(levelData, def.key), lessonObj.lesson);
-    const clean = cleanItems(def.type, raw);
-    const items = buildActivityItems(def.type, clean);
-    // qCount phải tính trên `items` (đã gộp nhóm cho listen_mc/listen_tf/reading_mc),
-    // không phải trên `clean` (mảng câu phẳng) — countQuestions() cho 3 dạng nhóm
-    // đọc items[i].rows.length, nếu truyền nhầm mảng phẳng vào sẽ ném lỗi
-    // "Cannot read properties of undefined (reading 'length')" và dừng cả hàm
-    // selectLesson() giữa chừng — đây chính là nguyên nhân "bấm Bắt đầu làm bài"
-    // không phản ứng gì khi bài có dạng Nghe/Đọc hiểu.
-    return {...def, items, qCount: countQuestions(def.type, items)};
-  }).filter(a => a.items.length > 0);
-
-  if(!activities.length){
-    alert("Bài học này chưa có nội dung nào. Vui lòng chọn bài khác hoặc liên hệ giáo viên.");
+function startFromLanding(){
+  const name = document.getElementById('landingName').value.trim();
+  const cls = document.getElementById('landingClass').value.trim();
+  const err = document.getElementById('landingError');
+  if(!landingSelectedLevel || !name || !cls){
+    err.style.display = 'block';
     return;
   }
+  err.style.display = 'none';
+  student.hoTen = name;
+  student.lop = cls;
+  state.level = landingSelectedLevel;
 
-  // Tổng điểm luôn là 100 — chia đều cho các dạng có chấm điểm tự động đang
-  // xuất hiện trong bài này (SCORE_WEIGHTS). "Đặt câu" (writing) không có
-  // trong SCORE_WEIGHTS nên luôn có weight = null (không tính điểm tự động,
-  // GV chấm tay riêng) — gán weight ngay từ bước này để hiện được điểm từng
-  // phần NGAY TRONG LÚC làm bài (không chỉ đợi tới màn kết quả cuối).
-  const scoringTypesCount = activities.filter(a => SCORE_WEIGHTS[a.type]).length;
-  const perTypeWeight = scoringTypesCount > 0 ? 100 / scoringTypesCount : 0;
-  activities.forEach(a => { a.weight = SCORE_WEIGHTS[a.type] ? perTypeWeight : null; });
+  document.getElementById('landingScreen').style.display = 'none';
+  document.getElementById('appShell').style.display = 'flex';
 
-  actIndex = 0; itemIndex = 0;
-  results = {};
-  translatePunctPenalty = 0;
-  activities.forEach(a=>{
-    if(a.type==="writing") results[a.type] = {answers:[]};
-    else                   results[a.type] = {correct:0, total:a.qCount, detail:[]};
-  });
-
-  document.getElementById("act-student-info").textContent = name+" · Lớp: "+cls;
-  renderActStepDots();
-  show("screen-activity");
-  renderStep();
+  buildLevelSelect();
+  loadData();
 }
 
-function renderActStepDots(){
-  const el = document.getElementById("act-steps");
-  el.innerHTML = activities.map((a,i)=>
-    '<span class="act-step-dot '+(i<actIndex?'done':i===actIndex?'active':'')+'" title="'+a.label+'"></span>'
-  ).join("");
+// ===================== CHỌN CẤP ĐỘ (trong sidebar, sau khi đã vào) =====================
+function buildLevelSelect(){
+  const sel = document.getElementById('levelSelect');
+  sel.innerHTML = LEVELS.map(l => `<option value="${l.key}">${l.label}</option>`).join('');
+  sel.value = state.level;
+  sel.onchange = () => switchLevel(sel.value);
+}
+function switchLevel(levelKey){
+  state.level = levelKey;
+  state.lesson = null;
+  state.answers = {};
+  DATA = null;
+  loadData();
 }
 
-function totalItemsCount(){ return activities.reduce((s,a)=>s+a.items.length,0); }
-function completedItemsCount(){
-  let n=0;
-  for(let i=0;i<actIndex;i++) n+=activities[i].items.length;
-  return n+itemIndex;
-}
-
-function updateActBar(){
-  const act = activities[actIndex];
-  document.getElementById("act-pill").textContent = (YCT_LABEL[level]||level)+" · Bài "+currentLesson.lesson;
-  const total = totalItemsCount();
-  const done = completedItemsCount();
-  const pct = total ? Math.round((done/total)*100) : 0;
-  const isGrouped = (act.type==="listen_mc"||act.type==="listen_tf"||act.type==="reading_mc");
-  const weightText = act.weight != null ? (" · "+(Math.round(act.weight*10)/10)+"đ") : " · GV chấm tay";
-  document.getElementById("act-prog-text").textContent =
-    act.icon+" "+act.label+weightText+" · "+(isGrouped ? ("Nhóm "+(itemIndex+1)+" / "+act.items.length) : ((itemIndex+1)+" / "+act.items.length));
-  document.getElementById("act-prog-pct").textContent = pct+"%";
-  document.getElementById("act-prog-fill").style.width = pct+"%";
-  renderActStepDots();
-}
-
-// ───────────────────────────────────────────────────────
-// RENDER TỪNG BƯỚC — dispatch theo loại hoạt động
-// ───────────────────────────────────────────────────────
-function renderStep(){
-  updateActBar();
-  const act = activities[actIndex];
-  const body = document.getElementById("act-body");
-  body.innerHTML = "";
-  const title = document.createElement("div");
-  title.className = "act-type-label";
-  const titleWeight = act.weight != null ? (" — "+(Math.round(act.weight*10)/10)+" điểm") : " — GV chấm tay, không tính vào 100đ tự động";
-  title.textContent = act.icon+" "+act.label+titleWeight;
-  body.appendChild(title);
-
-  try{
-    if(act.type==="word_matching")        renderWordMatching(body, act);
-    else if(act.type==="listen_mc")       renderListenMC(body, act.items[itemIndex]);
-    else if(act.type==="listen_tf")       renderListenTF(body, act.items[itemIndex]);
-    else if(act.type==="reading_mc")      renderReadingMC(body, act.items[itemIndex]);
-    else if(act.type==="sentence_order")  renderSentenceOrder(body, act.items[itemIndex]);
-    else if(act.type==="translate")       renderTranslate(body, act.items[itemIndex]);
-    else if(act.type==="writing")         renderWriting(body, act.items[itemIndex]);
-  }catch(e){
-    console.error("[YCT] Lỗi khi hiển thị câu — có thể dữ liệu Sheet thiếu cột:", e, act, itemIndex);
-    body.insertAdjacentHTML("beforeend",
-      '<div class="empty-box">⚠ Không hiển thị được câu này (dữ liệu trong Google Sheet có thể thiếu cột hoặc để trống).</div>'+
-      '<div class="quiz-nav"><button class="btn btn-primary" onclick="goNextItem()">Bỏ qua, tiếp theo →</button></div>'
-    );
-  }
-}
-
-function goNextItem(){
-  const act = activities[actIndex];
-  if(itemIndex < act.items.length - 1){
-    itemIndex++;
-  } else if(actIndex < activities.length - 1){
-    actIndex++; itemIndex = 0;
-  } else {
-    showResult();
+// ===================== TẢI DỮ LIỆU =====================
+async function loadData(){
+  const main = document.getElementById('main');
+  const url = APPS_SCRIPT_URLS[state.level];
+  if(!url || url.indexOf('PASTE_') === 0){
+    main.innerHTML = `<div class="status-banner err">
+      Chưa cấu hình Apps Script URL cho cấp ${state.level} trong file index.html (mục APPS_SCRIPT_URLS).
+      Hãy Deploy Code.gs trong Sheet ${state.level} thành Web app rồi dán link vào đúng ô ${state.level}.</div>`;
     return;
   }
-  renderStep();
-}
-
-// ── 1. NỐI TỪ (words) ──
-function renderWordMatching(body, act){
-  const item = act.items[itemIndex];
-  const hanzi = item.hanzi || item.word || "";
-  const correct = item.vietnamese || item.nghia || "";
-  const pinyin = (item.pinyin && String(item.pinyin).trim() ? item.pinyin : "");
-  const otherOptions = act.items.filter((_,i)=>i!==itemIndex).map(x=>x.vietnamese || x.nghia).filter(v => v && String(v).trim() && v!==correct);
-  const distractors = shuffle([...new Set(otherOptions)]).slice(0,3);
-  const options = shuffle([correct, ...distractors]);
-  body.insertAdjacentHTML("beforeend",
-    '<div class="q-text">'+hanzi+(pinyin ? ' <span style="font-weight:400;color:var(--gray);font-size:14px">('+pinyin+')</span>' : '')+'</div>'+
-    '<div class="choices" id="q-choices"></div>'+
-    '<div class="feedback" id="q-feedback"></div>'+
-    '<div class="quiz-nav"><button class="btn btn-primary" id="btn-next" disabled onclick="goNextItem()">Câu tiếp →</button></div>'
-  );
-  const choicesEl = document.getElementById("q-choices");
-  options.forEach((opt,i)=>{
-    const div=document.createElement("div"); div.className="choice";
-    div.innerHTML='<div class="badge">'+LABELS[i]+'</div><span>'+opt+'</span>';
-    div.onclick=()=>pickMatching(opt, correct, div);
-    choicesEl.appendChild(div);
-  });
-}
-function pickMatching(chosen, correct, el){
-  if(el.classList.contains("locked")) return;
-  const ok = chosen===correct;
-  document.querySelectorAll("#q-choices .choice").forEach(c=>{
-    c.classList.add("locked");
-    if(c===el){ c.classList.add(ok?"selected":"wrong"); }
-  });
-  if(!ok){
-    document.querySelectorAll("#q-choices .choice").forEach(c=>{
-      if(c.querySelector("span").textContent===correct) c.classList.add("correct");
-    });
-  } else { el.classList.add("correct"); }
-  const fb=document.getElementById("q-feedback"); fb.style.display="block";
-  fb.className="feedback "+(ok?"correct":"wrong");
-  fb.textContent = ok ? "✓ Chính xác!" : "✗ Đáp án đúng: "+correct;
-  const act = activities[actIndex];
-  if(ok) results[act.type].correct++;
-  results[act.type].detail.push({q:document.querySelector(".q-text")?.textContent, ok});
-  document.getElementById("btn-next").disabled=false;
-}
-
-// ── Helper dùng chung cho listen_mc / listen_tf / reading_mc ──
-// state theo dõi lựa chọn hiện tại của từng câu con trong nhóm, và nhóm đã
-// nộp hay chưa (nộp rồi thì khoá, hiện đúng/sai, mới cho bấm "tiếp").
-let groupState = { picks:{}, submitted:false };
-
-function groupSubmitBtnHtml(){
-  return '<div class="quiz-nav" style="justify-content:space-between">'+
-    '<span class="group-hint" id="group-hint">Chọn đáp án cho tất cả các câu rồi bấm Nộp.</span>'+
-    '<button class="btn btn-primary" id="btn-group-submit" disabled onclick="submitGroup()">Nộp nhóm</button>'+
-  '</div>';
-}
-function allPicked(rows){
-  return rows.every(r => groupState.picks[r.stt] !== undefined && groupState.picks[r.stt] !== null);
-}
-function refreshGroupSubmitBtn(rows){
-  const btn = document.getElementById("btn-group-submit");
-  if(btn) btn.disabled = !allPicked(rows);
-}
-
-// ── 2. NGHE CHỌN ĐÁP ÁN (listen1 → listen_mc) ──
-function renderListenMC(body, group){
-  groupState = { picks:{}, submitted:false };
-  const audioUrl = driveDirectUrl(group.rows[0].link_audio, "audio");
-  body.insertAdjacentHTML("beforeend",
-    '<div class="group-media">'+
-      '<div class="group-media-label">🎧 Nghe rồi trả lời các câu bên dưới</div>'+
-      '<audio controls preload="none" src="'+audioUrl+'"></audio>'+
-    '</div>'+
-    '<div id="group-subqs"></div>'+
-    groupSubmitBtnHtml()
-  );
-  const wrap = document.getElementById("group-subqs");
-  group.rows.forEach(row=>{
-    const imgs = [
-      {label:"A", url:row.anh_a}, {label:"B", url:row.anh_b},
-      {label:"C", url:row.anh_c}, {label:"D", url:row.anh_d}
-    ].filter(o => o.url && String(o.url).trim());
-    const block = document.createElement("div");
-    block.className = "subq-block";
-    block.dataset.stt = row.stt;
-    // Cũng tự nhận diện câu Đúng/Sai giống hệt Đọc hiểu: nếu cột "Đáp án đúng"
-    // của câu đó ghi "Đúng"/"Sai" thì hiện 2 nút Đúng/Sai (không cần ảnh) —
-    // nhờ vậy 1 bài nghe có thể trộn cả câu chọn ảnh/A-D lẫn câu Đúng/Sai.
-    const ansNorm = normLoose(row.dap_an_dung);
-    const isTF = (ansNorm === "dung" || ansNorm === "sai");
-    if(isTF){
-      const singleImg = imgs[0] ? imgs[0].url : "";
-      block.innerHTML =
-        '<div class="subq-num">Câu '+row.stt+'</div>'+
-        (singleImg ? '<div class="group-media" style="margin-bottom:10px;padding:8px"><img src="'+driveDirectUrl(singleImg,"image")+'"></div>' : '')+
-        '<div class="subq-tf-choices">'+
-          '<div class="subq-tf" data-val="Đúng">Đúng</div>'+
-          '<div class="subq-tf" data-val="Sai">Sai</div>'+
-        '</div>'+
-        '<div class="subq-fb"></div>';
-    } else if(imgs.length >= 2){
-      block.innerHTML =
-        '<div class="subq-num">Câu '+row.stt+'</div>'+
-        '<div class="subq-img-choices">'+
-          imgs.map(o=>'<div class="subq-img-choice" data-letter="'+o.label+'"><img src="'+driveDirectUrl(o.url,"image")+'"><div class="badge">'+o.label+'</div></div>').join("")+
-        '</div>'+
-        '<div class="subq-fb"></div>';
-    } else {
-      // Chỉ có 1 ảnh ghép chung (đã chứa sẵn cả các lựa chọn) → hiện ảnh 1 lần,
-      // học sinh chọn chữ cái A/B/C/D thay vì chọn ảnh.
-      const singleImg = imgs[0] ? imgs[0].url : (row.anh_a||row.anh_b||row.anh_c||row.anh_d);
-      block.innerHTML =
-        '<div class="subq-num">Câu '+row.stt+'</div>'+
-        (singleImg ? '<div class="group-media" style="margin-bottom:10px"><img src="'+driveDirectUrl(singleImg,"image")+'"></div>' : '')+
-        '<div class="subq-letter-choices">'+
-          LABELS.map(l=>'<div class="subq-letter" data-letter="'+l+'">'+l+'</div>').join("")+
-        '</div>'+
-        '<div class="subq-fb"></div>';
-    }
-    wrap.appendChild(block);
-    block.querySelectorAll("[data-letter],[data-val]").forEach(el=>{
-      el.onclick = ()=>{
-        if(groupState.submitted) return;
-        block.querySelectorAll("[data-letter],[data-val]").forEach(x=>x.classList.remove("selected"));
-        el.classList.add("selected");
-        groupState.picks[row.stt] = el.dataset.letter || el.dataset.val;
-        refreshGroupSubmitBtn(group.rows);
-      };
-    });
-  });
-}
-
-// ── 3. NGHE ĐÚNG / SAI (listen2 → listen_tf) ──
-function renderListenTF(body, group){
-  groupState = { picks:{}, submitted:false };
-  const audioUrl = driveDirectUrl(group.rows[0].link_audio, "audio");
-  body.insertAdjacentHTML("beforeend",
-    '<div class="group-media">'+
-      '<div class="group-media-label">👂 Nghe rồi xác định Đúng hay Sai</div>'+
-      '<audio controls preload="none" src="'+audioUrl+'"></audio>'+
-    '</div>'+
-    '<div id="group-subqs"></div>'+
-    groupSubmitBtnHtml()
-  );
-  const wrap = document.getElementById("group-subqs");
-  group.rows.forEach(row=>{
-    const block = document.createElement("div");
-    block.className = "subq-block";
-    block.dataset.stt = row.stt;
-    block.innerHTML =
-      '<div class="subq-num">Câu '+row.stt+'</div>'+
-      (row.link_anh ? '<div class="group-media" style="margin-bottom:10px;padding:8px"><img src="'+driveDirectUrl(row.link_anh,"image")+'"></div>' : '')+
-      '<div class="subq-tf-choices">'+
-        '<div class="subq-tf" data-val="Đúng">Đúng</div>'+
-        '<div class="subq-tf" data-val="Sai">Sai</div>'+
-      '</div>'+
-      '<div class="subq-fb"></div>';
-    wrap.appendChild(block);
-    block.querySelectorAll("[data-val]").forEach(el=>{
-      el.onclick = ()=>{
-        if(groupState.submitted) return;
-        block.querySelectorAll("[data-val]").forEach(x=>x.classList.remove("selected"));
-        el.classList.add("selected");
-        groupState.picks[row.stt] = el.dataset.val;
-        refreshGroupSubmitBtn(group.rows);
-      };
-    });
-  });
-}
-
-// ── 4. ĐỌC HIỂU (Read → reading_mc) ──
-function renderReadingMC(body, group){
-  groupState = { picks:{}, submitted:false };
-  const imgUrl = driveDirectUrl(group.rows[0].link_anh, "image");
-  body.insertAdjacentHTML("beforeend",
-    '<div class="group-media">'+
-      '<div class="group-media-label">📖 Đọc rồi trả lời các câu bên dưới</div>'+
-      '<img src="'+imgUrl+'">'+
-    '</div>'+
-    '<div id="group-subqs"></div>'+
-    groupSubmitBtnHtml()
-  );
-  const wrap = document.getElementById("group-subqs");
-  group.rows.forEach(row=>{
-    const block = document.createElement("div");
-    block.className = "subq-block";
-    block.dataset.stt = row.stt;
-    // Mỗi câu trong "Đọc hiểu" tự nhận diện kiểu đáp án riêng: nếu cột
-    // "Đáp án đúng" ghi "Đúng"/"Sai" thì hiện 2 nút Đúng/Sai, còn lại (A/B/C/D)
-    // thì hiện 4 nút chữ cái — nhờ vậy 1 bài đọc có thể trộn cả 2 kiểu câu hỏi.
-    const ansNorm = normLoose(row.dap_an_dung);
-    const isTF = (ansNorm === "dung" || ansNorm === "sai");
-    block.innerHTML =
-      '<div class="subq-num">Câu '+row.stt+'</div>'+
-      (isTF ?
-        '<div class="subq-tf-choices">'+
-          '<div class="subq-tf" data-val="Đúng">Đúng</div>'+
-          '<div class="subq-tf" data-val="Sai">Sai</div>'+
-        '</div>'
-      :
-        '<div class="subq-letter-choices">'+
-          LABELS.map(l=>'<div class="subq-letter" data-letter="'+l+'">'+l+'</div>').join("")+
-        '</div>'
-      )+
-      '<div class="subq-fb"></div>';
-    wrap.appendChild(block);
-    block.querySelectorAll("[data-letter],[data-val]").forEach(el=>{
-      el.onclick = ()=>{
-        if(groupState.submitted) return;
-        block.querySelectorAll("[data-letter],[data-val]").forEach(x=>x.classList.remove("selected"));
-        el.classList.add("selected");
-        groupState.picks[row.stt] = el.dataset.letter || el.dataset.val;
-        refreshGroupSubmitBtn(group.rows);
-      };
-    });
-  });
-}
-
-// So khớp khoan dung: bỏ dấu tiếng Việt + hạ chữ thường, để "Đúng"/"Dung" hay
-// hoa/thường đều được coi là khớp — tránh chấm sai oan chỉ vì gõ thiếu dấu.
-function normLoose(s){
-  return String(s||"").trim().toLowerCase().replace(/đ/g,"d")
-    .normalize("NFD").replace(/[̀-ͯ]/g,"");
-}
-
-// Nộp cả nhóm (dùng chung cho listen_mc / listen_tf / reading_mc): khoá lựa
-// chọn, tô đúng/sai từng câu con, cộng điểm, rồi đổi nút thành "Tiếp theo →".
-function submitGroup(){
-  if(groupState.submitted) return;
-  groupState.submitted = true;
-  const act = activities[actIndex];
-  const group = act.items[itemIndex];
-  const answerField = (act.type === "listen_tf") ? "dap_an" : "dap_an_dung";
-
-  group.rows.forEach(row=>{
-    const block = document.querySelector('.subq-block[data-stt="'+row.stt+'"]');
-    if(!block) return;
-    const picked = groupState.picks[row.stt];
-    const correctVal = String(row[answerField]||"").trim();
-    const ok = normLoose(picked) === normLoose(correctVal);
-    block.querySelectorAll("[data-letter],[data-val]").forEach(el=>{
-      const val = el.dataset.letter || el.dataset.val;
-      el.classList.add("locked");
-      const isCorrectOpt = normLoose(val) === normLoose(correctVal);
-      if(isCorrectOpt) el.classList.add("correct");
-      if(val === picked && !ok) el.classList.add("wrong");
-    });
-    const fb = block.querySelector(".subq-fb");
-    fb.className = "subq-fb "+(ok?"correct":"wrong");
-    fb.textContent = ok ? "✓ Chính xác!" : "✗ Đáp án đúng: "+correctVal;
-
-    if(ok) results[act.type].correct++;
-    results[act.type].detail.push({q:"Câu "+row.stt, ok});
-  });
-
-  document.getElementById("group-hint").textContent = "Đã nộp — xem đáp án ở từng câu bên trên.";
-  const btn = document.getElementById("btn-group-submit");
-  btn.textContent = (itemIndex < act.items.length-1) ? "Nhóm tiếp theo →" : (actIndex < activities.length-1 ? "Dạng bài tiếp theo →" : "Xem kết quả →");
-  btn.disabled = false;
-  btn.onclick = goNextItem;
-}
-
-// ── 5. SẮP XẾP CÂU (sentence_order) ──
-function renderSentenceOrder(body, item){
-  const answer = String(item.answer || "").trim();
-  const altAnswers = [];
-  for(let k = 2; k <= 99; k++){
-    const answerCol = "answer" + k;
-    const val = String(item[answerCol] || "").trim();
-    if(val !== "") altAnswers.push(val);
-    else if(k > 10) break;
-  }
-  const words = answer.split(/\s+/).filter(Boolean);
-  // Cột "pinyin" (nếu Sheet có điền) — phải chứa đúng số từ, cùng thứ tự với
-  // cột "answer", cách nhau bằng dấu cách, để mỗi từ hiện đúng phiên âm của nó.
-  // Nếu không có cột này, hoặc số từ không khớp, hệ thống bỏ qua — chỉ hiện chữ Hán.
-  const rawPinyins = String(item.pinyin || "").trim() ? String(item.pinyin).trim().split(/\s+/) : [];
-  const pinyins = rawPinyins.length === words.length ? rawPinyins : null;
-  sentordBuilt = [];
-  sentordPoolUsed = new Array(words.length).fill(false);
-  sentordSubmitted = false;
-  const pool = shuffle(words.map((w,i)=>({w,i})));
-  body.insertAdjacentHTML("beforeend",
-    '<div class="sentord-answer" id="sentord-answer"></div>'+
-    '<div class="sentord-pool" id="sentord-pool"></div>'+
-    '<div class="feedback" id="q-feedback"></div>'+
-    '<div class="quiz-nav" style="justify-content:space-between">'+
-      '<button class="btn btn-outline" id="btn-sentord-undo" onclick="sentordUndo()">↺ Xóa từ cuối</button>'+
-      '<button class="btn btn-primary" id="btn-next" disabled onclick="sentordNextOrCheck()">Câu tiếp →</button>'+
-    '</div>'
-  );
-  window.__sentordWords = words;
-  window.__sentordPinyins = pinyins;
-  window.__sentordAnswer = answer;
-  window.__sentordAccepted = [answer, ...altAnswers];
-  const poolEl = document.getElementById("sentord-pool");
-  pool.forEach(({w,i})=>{
-    const tok = document.createElement("div");
-    tok.className = "word-tok"; tok.dataset.idx = i;
-    tok.innerHTML = pinyins ? '<span class="tok-py">'+pinyins[i]+'</span><span class="tok-hanzi">'+w+'</span>' : w;
-    tok.onclick = () => sentordPick(i, tok);
-    poolEl.appendChild(tok);
-  });
-}
-function sentordPick(i, tokEl){
-  if(sentordSubmitted || sentordPoolUsed[i]) return;
-  sentordPoolUsed[i] = true;
-  tokEl.classList.add("used");
-  sentordBuilt.push(window.__sentordWords[i]);
-  renderSentordAnswer();
-  const nextBtn = document.getElementById("btn-next");
-  if(nextBtn) nextBtn.disabled = sentordBuilt.length !== window.__sentordWords.length;
-}
-function sentordUndo(){
-  if(sentordSubmitted || !sentordBuilt.length) return;
-  sentordBuilt.pop();
-  const used = new Array(window.__sentordWords.length).fill(false);
-  const remainingCounts = {};
-  sentordBuilt.forEach(w=>{ remainingCounts[w] = (remainingCounts[w]||0)+1; });
-  window.__sentordWords.forEach((w,i)=>{
-    if(remainingCounts[w] > 0){ used[i]=true; remainingCounts[w]--; }
-  });
-  sentordPoolUsed = used;
-  document.querySelectorAll("#sentord-pool .word-tok").forEach(tok=>{
-    const i = Number(tok.dataset.idx);
-    tok.classList.toggle("used", used[i]);
-  });
-  renderSentordAnswer();
-  const nextBtn = document.getElementById("btn-next");
-  if(nextBtn) nextBtn.disabled = true;
-}
-function renderSentordAnswer(){
-  const el = document.getElementById("sentord-answer");
-  const pinyins = window.__sentordPinyins;
-  el.innerHTML = sentordBuilt.map(w=>{
-    if(pinyins){
-      const i = window.__sentordWords.indexOf(w);
-      if(i !== -1) return '<span class="word-tok" style="cursor:default"><span class="tok-py">'+pinyins[i]+'</span><span class="tok-hanzi">'+w+'</span></span>';
-    }
-    return '<span class="word-tok" style="cursor:default">'+w+'</span>';
-  }).join("");
-}
-function sentordNextOrCheck(){
-  if(sentordBuilt.length !== window.__sentordWords.length) return;
-  if(!sentordSubmitted){
-    sentordSubmitted = true;
-    checkSentordDone();
-    const undoBtn = document.getElementById("btn-sentord-undo");
-    if(undoBtn) undoBtn.disabled = true;
-    document.querySelectorAll("#sentord-pool .word-tok").forEach(tok=>{ tok.style.pointerEvents = "none"; });
-  } else {
-    goNextItem();
-  }
-}
-function checkSentordDone(){
-  const built = sentordBuilt.join(" ");
-  const accepted = window.__sentordAccepted || [window.__sentordAnswer];
-  const ok = accepted.includes(built);
-  const fb = document.getElementById("q-feedback");
-  fb.style.display="block";
-  fb.className = "feedback "+(ok?"correct":"wrong");
-  fb.textContent = ok ? "✓ Chính xác!" : "✗ Đáp án đúng: "+window.__sentordAnswer;
-  const act = activities[actIndex];
-  if(ok) results[act.type].correct++;
-  results[act.type].detail.push({q:window.__sentordAnswer, ok});
-}
-
-// ── 6. DỊCH CÂU (translate) ──
-function normalizeTranslateAnswer(s){
-  return String(s || "")
-    .trim()
-    .replace(/[\s　]+/g, "")
-    .replace(/[，,。.！!？?、;；:：""''‘’「」『』（）()《》<>~～\-—…]/g, "");
-}
-const PUNCT_CANON_MAP = {
-  "，":",", ",":",",
-  "。":".", ".":".",
-  "！":"!", "!":"!",
-  "？":"?", "?":"?",
-  "、":"、",
-  "；":";", ";":";",
-  "：":":", ":":":",
-  "\u201c":'"', "\u201d":'"', '"':'"',
-  "\u2018":"'", "\u2019":"'", "'":"'",
-  "（":"(", "(":"(",
-  "）":")", ")":")",
-  "《":"<", "<":"<",
-  "》":">", ">":">",
-  "～":"~", "~":"~",
-  "—":"-", "-":"-", "…":"..."
-};
-const PUNCT_CHARS_REGEX = /[，,。.！!？?、;；:：""''‘’「」『』（）()《》<>~～\-—…]/g;
-function extractPunctTokens(s){
-  const matches = String(s || "").match(PUNCT_CHARS_REGEX) || [];
-  return matches.map(ch => PUNCT_CANON_MAP[ch] || ch);
-}
-function levenshteinTokens(a, b){
-  const n = a.length, m = b.length;
-  const dp = Array.from({length:n+1}, () => new Array(m+1).fill(0));
-  for(let i=0;i<=n;i++) dp[i][0] = i;
-  for(let j=0;j<=m;j++) dp[0][j] = j;
-  for(let i=1;i<=n;i++){
-    for(let j=1;j<=m;j++){
-      dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1] : 1+Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
-    }
-  }
-  return dp[n][m];
-}
-const PUNCT_PENALTY_PER_ERROR = 2;
-
-function renderTranslate(body, item){
-  const vn = item.vietnamese || "";
-  const rawAnswers = [];
-  const rawPinyins = [];
-  const answer1 = String(item.chinese || "").trim();
-  if(answer1){ rawAnswers.push(answer1); rawPinyins.push(String(item.pinyin || "").trim()); }
-  for(let k = 2; k <= 99; k++){
-    const chineseCol = "chinese" + k;
-    const val = String(item[chineseCol] || "").trim();
-    if(val !== ""){ rawAnswers.push(val); rawPinyins.push(String(item["pinyin"+k] || "").trim()); }
-    else if(k > 10) break;
-  }
-  window.__translateAnswersDisplay = rawAnswers;
-  window.__translatePinyins = rawPinyins;
-  window.__translateAnswers = rawAnswers.map(a => normalizeTranslateAnswer(a));
-  body.insertAdjacentHTML("beforeend",
-    '<div class="q-text">'+vn+'</div>'+
-    '<input type="text" class="translate-input" id="translate-input" placeholder="Nhập câu tiếng Trung tương ứng...">'+
-    '<div class="feedback" id="q-feedback"></div>'+
-    '<div class="quiz-nav">'+
-      '<button class="btn btn-primary" id="btn-check" onclick="checkTranslate()">Kiểm tra</button>'+
-      '<button class="btn btn-outline" id="btn-next" style="display:none;margin-left:8px" onclick="goNextItem()">Câu tiếp →</button>'+
-    '</div>'
-  );
-}
-function checkTranslate(){
-  const accepted = window.__translateAnswers || [];
-  const displayAnswers = window.__translateAnswersDisplay || accepted;
-  const displayPinyins = window.__translatePinyins || [];
-  const withPinyin = (text, i) => (displayPinyins[i] ? text+' <span class="hanzi-pinyin" style="display:inline">('+displayPinyins[i]+')</span>' : text);
-  const inp = document.getElementById("translate-input");
-  const rawGiven = inp.value.trim();
-  const given = normalizeTranslateAnswer(rawGiven);
-  const matchIdx = given!=="" ? accepted.indexOf(given) : -1;
-  const ok = matchIdx !== -1;
-  inp.disabled = true;
-  const fb = document.getElementById("q-feedback");
-  fb.style.display="block";
-  fb.className = "feedback "+(ok?"correct":"wrong");
-
-  let punctErrors = 0;
-  if(ok){
-    const rawCorrect = displayAnswers[matchIdx] || accepted[matchIdx] || "";
-    punctErrors = levenshteinTokens(extractPunctTokens(rawGiven), extractPunctTokens(rawCorrect));
-    if(punctErrors > 0) translatePunctPenalty += punctErrors * PUNCT_PENALTY_PER_ERROR;
-  }
-
-  if(ok && punctErrors === 0){
-    fb.innerHTML = "✓ Chính xác!" + (displayPinyins[matchIdx] ? ' <span class="hanzi-pinyin" style="display:inline">('+displayPinyins[matchIdx]+')</span>' : "");
-  } else if(ok && punctErrors > 0){
-    fb.innerHTML = "✓ Đúng nội dung, nhưng sai "+punctErrors+" dấu câu (trừ "+(punctErrors*PUNCT_PENALTY_PER_ERROR)+" điểm). Đáp án chuẩn: "+withPinyin(displayAnswers[matchIdx] || "", matchIdx);
-  } else {
-    fb.innerHTML = "✗ Đáp án đúng: "+displayAnswers.map((a,i)=>withPinyin(a,i)).join(" / ");
-  }
-
-  const act = activities[actIndex];
-  if(ok) results[act.type].correct++;
-  results[act.type].detail.push({q:inp.value, ok, punctErrors});
-  document.getElementById("btn-check").style.display="none";
-  document.getElementById("btn-next").style.display="inline-flex";
-}
-
-// ── 7. ĐẶT CÂU (writing – tự luận, GV chấm) ──
-function renderWriting(body, item){
-  const word = item.word || "";
-  const hint = item.hint || "";
-  const pinyin = (item.pinyin && String(item.pinyin).trim()) ? String(item.pinyin).trim() : "";
-  body.insertAdjacentHTML("beforeend",
-    '<div class="q-text">Đặt câu với từ: <strong>'+word+'</strong>'+(pinyin ? ' <span class="hanzi-pinyin" style="display:inline;font-size:16px">('+pinyin+')</span>' : '')+'</div>'+
-    (hint ? '<div class="hint" style="margin-bottom:10px">💡 '+hint+'</div>' : '')+
-    '<textarea class="writing-input" id="writing-input" placeholder="Viết câu của bạn ở đây..."></textarea>'+
-    '<div class="quiz-nav"><button class="btn btn-primary" onclick="saveWriting(\''+String(word).replace(/'/g,"\\'")+'\', \''+String(hint).replace(/'/g,"\\'")+'\')">Lưu câu, tiếp theo →</button></div>'
-  );
-}
-function saveWriting(word, hint){
-  const text = document.getElementById("writing-input").value.trim();
-  const act = activities[actIndex];
-  results[act.type].answers.push({word, hint, answer:text});
-  goNextItem();
-}
-
-// ───────────────────────────────────────────────────────
-// KẾT QUẢ
-// ───────────────────────────────────────────────────────
-function computeScore100(){
-  let score = 0;
-  const perType = {};
-  const scoringTypes = activities.filter(a => SCORE_WEIGHTS[a.type]).length;
-  const dynamicWeight = scoringTypes > 0 ? 100 / scoringTypes : 0;
-
-  activities.forEach(a=>{
-    if(!SCORE_WEIGHTS[a.type]) return;
-    const r = results[a.type];
-    const points = r.total ? (r.correct / r.total) * dynamicWeight : 0;
-    perType[a.type] = { points: points, weight: dynamicWeight, correct: r.correct, total: r.total };
-    score += points;
-  });
-  const punctuationPenalty = translatePunctPenalty || 0;
-  score = Math.max(0, score - punctuationPenalty);
-  return { score: Math.round(score * 10) / 10, perType: perType, punctuationPenalty: punctuationPenalty };
-}
-
-function showResult(){
-  const { score: autoScore, perType, punctuationPenalty } = computeScore100();
-  const breakdownEl = document.getElementById("res-breakdown");
-  breakdownEl.innerHTML = "";
-  activities.forEach(a=>{
-    const r = results[a.type];
-    let scoreText;
-    if(a.type==="writing"){
-      scoreText = r.answers.length+" câu — chờ GV chấm";
-    } else {
-      const pt = perType[a.type];
-      scoreText = pt.points.toFixed(1)+"/"+pt.weight.toFixed(1)+" điểm ("+pt.correct+"/"+pt.total+" câu đúng)";
-    }
-    breakdownEl.insertAdjacentHTML("beforeend",
-      '<div class="result-bar-row">'+
-        '<span class="result-bar-icon">'+a.icon+'</span>'+
-        '<span class="result-bar-label">'+a.label+'</span>'+
-        '<span class="result-bar-score">'+scoreText+'</span>'+
-      '</div>'
-    );
-  });
-  if(punctuationPenalty > 0){
-    breakdownEl.insertAdjacentHTML("beforeend",
-      '<div class="result-bar-row">'+
-        '<span class="result-bar-icon">✂️</span>'+
-        '<span class="result-bar-label">Trừ điểm sai dấu câu (Dịch câu)</span>'+
-        '<span class="result-bar-score">-'+punctuationPenalty+' điểm</span>'+
-      '</div>'
-    );
-  }
-
-  document.getElementById("res-score").textContent = autoScore;
-  document.getElementById("res-total").textContent = 100;
-  document.getElementById("res-info").textContent = name+" · Lớp: "+cls+" · "+(YCT_LABEL[level]||level)+" · Bài "+currentLesson.lesson;
-  const grades=[[90,"🏆 Xuất sắc!"],[75,"🌟 Giỏi"],[60,"👍 Khá"],[50,"📝 Trung bình"],[0,"💪 Cần ôn thêm"]];
-  document.getElementById("res-grade").textContent = grades.find(g=>autoScore>=g[0])[1];
-
-  const writingAct = activities.find(a=>a.type==="writing");
-  const writingWrap = document.getElementById("res-writing-wrap");
-  if(writingAct){
-    writingWrap.style.display="block";
-    document.getElementById("res-writing").innerHTML = results.writing.answers.map(a=>
-      '<div class="writing-review">'+
-        '<div class="w-word">'+a.word+'</div>'+
-        (a.hint ? '<div class="w-hint">💡 '+a.hint+'</div>' : '')+
-        '<div class="w-answer">'+(a.answer || '(Bỏ trống)')+'</div>'+
-      '</div>'
-    ).join("");
-  } else {
-    writingWrap.style.display="none";
-  }
-
-  document.getElementById("btn-submit").disabled=true;
-  document.getElementById("btn-submit").textContent="☁ Gửi kết quả lên bảng điểm";
-  document.getElementById("submit-status").textContent="";
-  document.getElementById("submit-status").className="submit-status";
-  show("screen-result");
-  submitResult();
-}
-
-// ════ LOCAL STORAGE AUTO-SAVE ════
-function saveResultsToLocal(results){
+  document.getElementById('topSub').textContent = 'Đang tải dữ liệu từ Google Sheet...';
   try{
-    const data = {timestamp: new Date().toISOString(), ...results};
-    localStorage.setItem('yct_results_backup', JSON.stringify(data));
-  }catch(e){ console.warn('Could not save to local storage:', e); }
+    const res = await fetch(url + '?action=data');
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    DATA = await res.json();
+    buildSidebar();
+    const firstAvailable = DATA.lessons.find(l => lessonHasContent(Number(l.lesson)));
+    if(firstAvailable) selectLesson(Number(firstAvailable.lesson));
+    else document.getElementById('main').innerHTML = '<div class="note-box">Chưa có bài nào có dữ liệu.</div>';
+  }catch(err){
+    document.getElementById('main').innerHTML = `<div class="status-banner err">
+      Không tải được dữ liệu từ Google Sheet cấp ${state.level} (${err.message}). Kiểm tra lại: Apps Script đã Deploy
+      dạng Web app, quyền truy cập "Anyone", và link trong APPS_SCRIPT_URLS đã dán đúng chưa.</div>`;
+  }
 }
-function clearLocalResults(){
-  try{ localStorage.removeItem('yct_results_backup'); }catch(e){}
+
+function lessonHasContent(lessonNum){
+  // listen1_YCTx giờ gộp chung cả 2 dạng nghe (chọn A-D và Đúng/Sai) nên không cần
+  // kiểm tra riêng DATA.listen2 nữa (tab đó không còn được dùng để hiển thị).
+  const groups = [DATA.words, DATA.listen1, DATA.read, DATA.mc, DATA.sentenceOrder, DATA.translate, DATA.writing];
+  return groups.some(g => (g||[]).some(r => Number(r.lesson) === lessonNum));
+}
+
+function rowsFor(group, lessonNum){
+  return (DATA[group] || []).filter(r => Number(r.lesson) === lessonNum);
+}
+
+// ===================== SIDEBAR =====================
+function buildSidebar(){
+  const el = document.getElementById('lessonList');
+  el.innerHTML = '';
+  DATA.lessons.forEach(l => {
+    const num = Number(l.lesson);
+    const has = lessonHasContent(num);
+    const div = document.createElement('div');
+    div.className = 'lesson-item' + (state.lesson === num ? ' active' : '') + (has ? '' : ' disabled');
+    div.innerHTML = `<span>${l['Số bài'] || ('Bài ' + num)}</span>` + (has ? '' : '<span class="soon">Sắp có</span>');
+    if(has) div.onclick = () => selectLesson(num);
+    el.appendChild(div);
+  });
+}
+
+function selectLesson(num){
+  state.lesson = num;
+  state.answers = {};
+  buildSidebar();
+  renderLesson(num);
+  window.scrollTo({top:0});
+}
+
+// ===================== DRIVE LINK -> URL NHÚNG ĐƯỢC =====================
+function driveId(link){
+  if(!link) return null;
+  const m = String(link).match(/\/d\/([a-zA-Z0-9_-]+)/) || String(link).match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  return m ? m[1] : null;
+}
+function driveImg(link){
+  const id = driveId(link);
+  return id ? `https://drive.google.com/uc?export=view&id=${id}` : '';
+}
+function driveAudio(link){
+  const id = driveId(link);
+  return id ? `https://drive.google.com/uc?export=download&id=${id}` : '';
+}
+
+// ===================== RENDER TỪNG PHẦN =====================
+function renderLesson(num){
+  const lessonLabel = (DATA.lessons.find(l => Number(l.lesson) === num) || {})['Số bài'] || ('Bài ' + num);
+  const levelLabel = (LEVELS.find(l => l.key === state.level) || {}).label || state.level;
+  document.getElementById('topTitle').textContent = 'Tiếng Trung Thảo Nguyên — ' + levelLabel + ' — ' + lessonLabel;
+  document.getElementById('topSub').textContent = 'Luyện tập YCT — dữ liệu lấy trực tiếp từ Google Sheet';
+
+  let html = '';
+  html += renderWords(rowsFor('words', num));
+  html += renderListen1(rowsFor('listen1', num));
+  html += renderRead(rowsFor('read', num));
+  html += renderMc(rowsFor('mc', num));
+  html += renderSentenceOrder(rowsFor('sentenceOrder', num));
+  html += renderTranslate(rowsFor('translate', num));
+  html += renderWriting(rowsFor('writing', num));
+  html += renderSubmitBox(num);
+  document.getElementById('main').innerHTML = html;
+
+  wireSentenceOrder();
+}
+function shuffleArr(a){ return [...a].sort(() => Math.random() - 0.5); }
+// Đáp án của dòng là "Đúng"/"Sai" hay là 1 chữ cái A-D — dùng để tự nhận dạng
+// từng câu trong tab đã gộp (nghe / đọc hiểu) là dạng nào, không cần thêm cột riêng.
+function isDungSaiValue(val){
+  const v = String(val || '').trim().toLowerCase();
+  return v === 'đúng' || v === 'dung' || v === 'sai';
+}
+
+function emptyNote(label){
+  return `<div class="note-box">Phần "${label}" giáo viên chưa nhập dữ liệu cho bài này.</div>`;
+}
+
+// Cột pinyin là tuỳ chọn ở mọi tab — nếu giáo viên có điền thì hiện, không có thì bỏ qua,
+// không tự bịa pinyin cho những dòng chưa có.
+function pinyinHint(r){
+  return r.pinyin ? `<div class="hint pinyin-hint">${r.pinyin}</div>` : '';
+}
+
+// ---- 1. Từ vựng (nối từ: bấm chữ Hán bên trái rồi bấm nghĩa tương ứng bên phải) ----
+let matchState = { pickedLeft: null, pickedRight: null };
+function renderWords(rows){
+  let html = '<div class="section-title">1. Từ vựng — Nối từ</div>';
+  if(!rows.length) return html + emptyNote('Từ vựng');
+  matchState = { pickedLeft: null, pickedRight: null };
+  const leftOrder = rows.map((r, i) => i);
+  const rightOrder = shuffleArr(rows.map((r, i) => i));
+  html += '<div class="match-wrap"><div class="match-col" id="matchLeft">';
+  leftOrder.forEach(i => {
+    const r = rows[i];
+    html += `<div class="match-item" data-idx="${i}" onclick="pickMatch('left',${i})">
+      <div class="hz">${r.hanzi || ''}</div>${r.pinyin ? `<div class="py">${r.pinyin}</div>` : ''}
+    </div>`;
+  });
+  html += '</div><div class="match-col" id="matchRight">';
+  rightOrder.forEach(i => {
+    const r = rows[i];
+    html += `<div class="match-item" data-idx="${i}" onclick="pickMatch('right',${i})">${r.vietnamese || ''}</div>`;
+  });
+  html += '</div></div><div class="hint">Bấm 1 từ Hán bên trái, sau đó bấm nghĩa tiếng Việt tương ứng bên phải để nối. Nối đúng sẽ khoá lại (xanh).</div>';
+  return html;
+}
+function pickMatch(side, idx){
+  const col = document.getElementById(side === 'left' ? 'matchLeft' : 'matchRight');
+  const el = col.querySelector(`[data-idx="${idx}"]`);
+  if(!el || el.classList.contains('matched')) return;
+  if(side === 'left'){
+    if(matchState.pickedLeft != null){
+      const prev = document.querySelector(`#matchLeft [data-idx="${matchState.pickedLeft}"]`);
+      if(prev) prev.classList.remove('picked');
+    }
+    matchState.pickedLeft = idx;
+    el.classList.add('picked');
+  } else {
+    if(matchState.pickedRight != null){
+      const prev = document.querySelector(`#matchRight [data-idx="${matchState.pickedRight}"]`);
+      if(prev) prev.classList.remove('picked');
+    }
+    matchState.pickedRight = idx;
+    el.classList.add('picked');
+  }
+  if(matchState.pickedLeft != null && matchState.pickedRight != null){
+    const leftEl = document.querySelector(`#matchLeft [data-idx="${matchState.pickedLeft}"]`);
+    const rightEl = document.querySelector(`#matchRight [data-idx="${matchState.pickedRight}"]`);
+    const ok = matchState.pickedLeft === matchState.pickedRight;
+    if(ok){
+      leftEl.classList.remove('picked'); rightEl.classList.remove('picked');
+      leftEl.classList.add('matched'); rightEl.classList.add('matched');
+      state.answers['wm-' + matchState.pickedLeft] = true;
+      matchState.pickedLeft = null; matchState.pickedRight = null;
+    } else {
+      leftEl.classList.add('wrong'); rightEl.classList.add('wrong');
+      const badLeft = matchState.pickedLeft, badRight = matchState.pickedRight;
+      setTimeout(() => {
+        const le = document.querySelector(`#matchLeft [data-idx="${badLeft}"]`);
+        const re = document.querySelector(`#matchRight [data-idx="${badRight}"]`);
+        if(le) le.classList.remove('picked','wrong');
+        if(re) re.classList.remove('picked','wrong');
+      }, 700);
+      matchState.pickedLeft = null; matchState.pickedRight = null;
+    }
+  }
+}
+
+// ---- 2. Nghe — chọn đáp án (tab listen1_ gộp chung 2 dạng: trắc nghiệm A-D bằng ảnh,
+// và đúng/sai — tự nhận dạng theo giá trị của cột đáp án trong từng dòng, không cần
+// thêm cột đánh dấu riêng: nếu đáp án là "Đúng"/"Sai" thì hiện dạng đúng/sai, còn lại
+// (chữ cái A/B/C/D) thì hiện trắc nghiệm ảnh) ----
+function renderListen1(rows){
+  let html = '<div class="section-title">2. Nghe — chọn đáp án</div>';
+  if(!rows.length) return html + emptyNote('Nghe chọn đáp án');
+  rows.forEach((r, i) => {
+    const key = 'listen1-' + i;
+    const ans = r['Đáp án đúng'] || r['Đáp án (Đúng/Sai)'] || r['Đáp án'] || '';
+    const audio = `<div style="margin:8px 0;"><audio controls preload="none" src="${driveAudio(r['Link audio'])}"></audio></div>`;
+    let body;
+    if(isDungSaiValue(ans)){
+      const img = r['Link ảnh'] ? `<img class="single-img" src="${driveImg(r['Link ảnh'])}">` : '';
+      body = `${img}<div class="options">
+        <button class="opt-btn" onclick="checkChoice('${key}','Đúng','${ans}',this)">Đúng</button>
+        <button class="opt-btn" onclick="checkChoice('${key}','Sai','${ans}',this)">Sai</button>
+      </div>`;
+    } else {
+      body = `<div class="img-grid">
+        ${['A','B','C','D'].map(L => {
+          const link = r['Ảnh ' + L];
+          if(!link) return '';
+          return `<div class="img-opt" onclick="checkChoice('${key}','${L}','${ans}',this)">
+            <img src="${driveImg(link)}"><div class="lab">${L}</div></div>`;
+        }).join('')}
+      </div>`;
+    }
+    html += `<div class="card">
+      <span class="qnum">${r.STT || (i+1)}</span>
+      ${pinyinHint(r)}
+      ${audio}
+      ${body}
+      <div class="feedback" id="fb-${key}"></div>
+    </div>`;
+  });
+  return html;
+}
+
+// ---- 3. Đọc hiểu (tab read_ gộp chung: trắc nghiệm A-D hoặc đúng/sai — tự nhận dạng
+// theo giá trị đáp án của từng dòng, giống cách làm ở phần Nghe) ----
+function renderRead(rows){
+  let html = '<div class="section-title">3. Đọc hiểu</div>';
+  if(!rows.length) return html + emptyNote('Đọc hiểu');
+  rows.forEach((r, i) => {
+    const key = 'read-' + i;
+    const ans = r['Đáp án đúng'] || r['Đáp án (Đúng/Sai)'] || r['Đáp án'] || '';
+    let options;
+    if(isDungSaiValue(ans)){
+      options = `<div class="options">
+        <button class="opt-btn" onclick="checkChoice('${key}','Đúng','${ans}',this)">Đúng</button>
+        <button class="opt-btn" onclick="checkChoice('${key}','Sai','${ans}',this)">Sai</button>
+      </div>`;
+    } else {
+      options = `<div class="options">
+        ${['A','B','C','D'].map(L => `<button class="opt-btn" onclick="checkChoice('${key}','${L}','${ans}',this)">${L}</button>`).join('')}
+      </div>`;
+    }
+    html += `<div class="card">
+      <span class="qnum">${r.STT || (i+1)}</span>
+      ${pinyinHint(r)}
+      <img class="single-img" src="${driveImg(r['Link ảnh'])}">
+      ${options}
+      <div class="feedback" id="fb-${key}"></div>
+    </div>`;
+  });
+  return html;
+}
+
+// ---- 4. Điền từ trắc nghiệm ----
+function renderMc(rows){
+  let html = '<div class="section-title">4. Điền từ — trắc nghiệm</div>';
+  if(!rows.length) return html + emptyNote('Điền từ trắc nghiệm');
+  rows.forEach((r, i) => {
+    const key = 'mc-' + i;
+    const opts = [r.option_a, r.option_b, r.option_c, r.option_d];
+    const correctIdx = Number(r.answer);
+    html += `<div class="card">
+      <span class="qnum">${i+1}</span>
+      <div class="prompt">${r.question || ''}</div>
+      <div class="hint" style="margin-bottom:8px;">${r.pinyin || ''}</div>
+      <div class="options">
+        ${opts.map((o, idx) => `<button class="opt-btn" onclick="checkChoiceIdx('${key}',${idx},${correctIdx},this)">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb-${key}"></div>
+    </div>`;
+  });
+  return html;
+}
+
+// ---- 5. Sắp xếp câu (có thể có nhiều đáp án đúng: answer, answer2, answer3, answer4 —
+// giống cách làm ở "Dịch câu" — số chip từ được gộp đủ để ghép được bất kỳ đáp án nào) ----
+function renderSentenceOrder(rows){
+  let html = '<div class="section-title">5. Sắp xếp câu</div>';
+  if(!rows.length) return html + emptyNote('Sắp xếp câu');
+  rows.forEach((r, i) => {
+    const key = 'so-' + i;
+    const accepted = [r.answer, r.answer2, r.answer3, r.answer4]
+      .filter(Boolean).map(s => String(s).trim());
+    const bank = buildWordBank(accepted);
+    const shuffled = shuffleArr(bank);
+    html += `<div class="card" data-key="${key}" data-answers='${escapeAttr(JSON.stringify(accepted))}'>
+      <span class="qnum">${i+1}</span>
+      <div class="prompt">${r.vietnamese || ''}</div>
+      ${pinyinHint(r)}
+      <div class="answer-line" id="line-${key}"></div>
+      <div class="chips" id="chips-${key}">
+        ${shuffled.map(w => `<span class="chip" data-word="${escapeAttr(w)}">${w}</span>`).join('')}
+      </div>
+      <div class="row-actions">
+        <button class="btn secondary" onclick="resetScramble('${key}')">Làm lại</button>
+        <button class="btn" onclick="checkScramble('${key}')">Kiểm tra</button>
+      </div>
+      <div class="feedback" id="fb-${key}"></div>
+    </div>`;
+  });
+  return html;
+}
+// Gộp số chip từ cần thiết để ghép được BẤT KỲ đáp án nào trong các đáp án đúng
+// (lấy số lần xuất hiện tối đa của mỗi từ trong 1 đáp án, để luôn đủ chip ghép đáp án đó).
+function buildWordBank(accepted){
+  const freq = {};
+  accepted.forEach(a => {
+    const local = {};
+    a.split(/\s+/).forEach(w => { if(w) local[w] = (local[w] || 0) + 1; });
+    Object.keys(local).forEach(w => { freq[w] = Math.max(freq[w] || 0, local[w]); });
+  });
+  const bank = [];
+  Object.keys(freq).forEach(w => { for(let k = 0; k < freq[w]; k++) bank.push(w); });
+  return bank;
+}
+function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
+function wireSentenceOrder(){
+  document.querySelectorAll('[id^="chips-"]').forEach(chipsEl => {
+    chipsEl.querySelectorAll('.chip').forEach(chip => {
+      chip.onclick = () => {
+        if(chip.classList.contains('used')) return;
+        const key = chipsEl.id.replace('chips-','');
+        const line = document.getElementById('line-' + key);
+        const span = document.createElement('span');
+        span.textContent = chip.dataset.word + ' ';
+        span.dataset.word = chip.dataset.word;
+        span.style.cursor = 'pointer';
+        span.onclick = () => { span.remove(); chip.classList.remove('used'); };
+        line.appendChild(span);
+        chip.classList.add('used');
+      };
+    });
+  });
+}
+function resetScramble(key){
+  document.getElementById('line-' + key).innerHTML = '';
+  document.querySelectorAll(`#chips-${key} .chip`).forEach(c => c.classList.remove('used'));
+  document.getElementById('fb-' + key).innerHTML = '';
+}
+function checkScramble(key){
+  const card = document.querySelector(`[data-key="${key}"]`);
+  const accepted = JSON.parse(card.dataset.answers.replace(/&quot;/g,'"'));
+  const line = document.getElementById('line-' + key);
+  const built = [...line.children].map(s => s.dataset.word).join(' ').trim();
+  const fb = document.getElementById('fb-' + key);
+  const ok = accepted.some(a => a.trim() === built);
+  fb.className = 'feedback ' + (ok ? 'ok' : 'bad');
+  fb.textContent = ok ? '✓ Chính xác!' : `✗ Chưa đúng. Đáp án chấp nhận: ${accepted.join(' / ')}`;
+  state.answers[key] = ok;
+}
+
+// ---- 6. Dịch câu ----
+function renderTranslate(rows){
+  let html = '<div class="section-title">6. Dịch câu</div>';
+  if(!rows.length) return html + emptyNote('Dịch câu');
+  rows.forEach((r, i) => {
+    const key = 'tr-' + i;
+    const accepted = [r.chinese, r.chinese2, r.chinese3, r.chinese4].filter(Boolean);
+    html += `<div class="card" data-key="${key}" data-accepted='${escapeAttr(JSON.stringify(accepted))}'>
+      <span class="qnum">${i+1}</span>
+      <div class="prompt">${r.vietnamese || ''}</div>
+      ${pinyinHint(r)}
+      <input type="text" id="in-${key}" placeholder="Gõ câu tiếng Trung...">
+      <div class="row-actions"><button class="btn" onclick="checkTranslate('${key}')">Kiểm tra</button></div>
+      <div class="feedback" id="fb-${key}"></div>
+    </div>`;
+  });
+  return html;
+}
+// Bỏ dấu câu (phẩy, chấm, hỏi, than, ngoặc...) và khoảng trắng trước khi so sánh,
+// để học sinh gõ đúng nội dung câu nhưng lệch/thiếu dấu câu vẫn được tính đúng cả câu
+// (không bị trừ điểm toàn bộ câu chỉ vì thiếu 1 dấu phẩy/dấu chấm).
+function normalizeChinese(s){
+  return String(s || '')
+    .replace(/[，。？！：；、""''《》「」（）,.\?!:;()<>"'\s]/g, '')
+    .trim();
+}
+function checkTranslate(key){
+  const card = document.querySelector(`[data-key="${key}"]`);
+  const accepted = JSON.parse(card.dataset.accepted.replace(/&quot;/g,'"'));
+  const val = document.getElementById('in-' + key).value.trim();
+  const exact = accepted.some(a => a.trim() === val);
+  const normVal = normalizeChinese(val);
+  const punctOnlyMatch = !exact && accepted.some(a => normalizeChinese(a) === normVal && normVal !== '');
+  const ok = exact || punctOnlyMatch;
+  const fb = document.getElementById('fb-' + key);
+  fb.className = 'feedback ' + (ok ? 'ok' : 'bad');
+  if(exact){
+    fb.textContent = '✓ Chính xác!';
+  } else if(punctOnlyMatch){
+    fb.textContent = '✓ Đúng nội dung — chỉ sai/thiếu dấu câu (dấu phẩy, dấu chấm...), không bị trừ điểm cả câu. Đáp án chuẩn: ' + accepted.join(' / ');
+  } else {
+    fb.textContent = `✗ Chưa đúng. Đáp án chấp nhận: ${accepted.join(' / ')}`;
+  }
+  state.answers[key] = ok;
+}
+
+// ---- 7. Đặt câu (tự luận, giáo viên chấm tay) ----
+function renderWriting(rows){
+  let html = '<div class="section-title">7. Đặt câu (tự luận)</div>';
+  if(!rows.length) return html + emptyNote('Đặt câu');
+  rows.forEach((r, i) => {
+    const key = 'wr-' + i;
+    // Cột image_url là tuỳ chọn (giáo viên có thể để trống) — nếu có link Drive thì
+    // hiện thêm ảnh minh hoạ để học sinh đặt câu dựa trên cả chữ và hình.
+    const img = r.image_url ? `<img class="single-img" src="${driveImg(r.image_url)}">` : '';
+    html += `<div class="card">
+      <span class="qnum">${i+1}</span>
+      <div class="hanzi-big">${r.word || ''}</div>
+      ${pinyinHint(r)}
+      ${img}
+      <div class="hint" style="margin-bottom:8px;">${r.hint || ''}</div>
+      <textarea id="${key}" placeholder="Đặt câu với từ trên..."></textarea>
+      <div class="hint">Phần này giáo viên sẽ chấm tay, hệ thống không tự chấm điểm.</div>
+    </div>`;
+  });
+  return html;
+}
+
+// ===================== HÀM CHẤM DÙNG CHUNG =====================
+function checkChoice(key, chosen, correct, el){
+  const ok = chosen === correct;
+  const group = el.parentElement;
+  group.querySelectorAll('.img-opt, .opt-btn').forEach(n => n.classList.remove('selected','correct','wrong'));
+  el.classList.add(ok ? 'correct' : 'wrong', 'selected');
+  const fb = document.getElementById('fb-' + key);
+  fb.className = 'feedback ' + (ok ? 'ok' : 'bad');
+  fb.textContent = ok ? '✓ Chính xác!' : `✗ Chưa đúng. Đáp án: ${correct}`;
+  state.answers[key] = ok;
+}
+function checkChoiceIdx(key, idx, correctIdx, el){
+  const ok = idx === correctIdx;
+  const group = el.parentElement;
+  group.querySelectorAll('.opt-btn').forEach(n => n.classList.remove('selected','correct','wrong'));
+  el.classList.add(ok ? 'correct' : 'wrong', 'selected');
+  const fb = document.getElementById('fb-' + key);
+  fb.className = 'feedback ' + (ok ? 'ok' : 'bad');
+  fb.textContent = ok ? '✓ Chính xác!' : '✗ Chưa đúng.';
+  state.answers[key] = ok;
+}
+
+// ===================== NỘP BÀI =====================
+function renderSubmitBox(){
+  return `<div class="submit-box">
+    <div class="section-title" style="margin-top:0;">Nộp bài</div>
+    <label>Họ và tên học sinh</label>
+    <input type="text" id="stuName" placeholder="Nguyễn Văn A" value="${escapeAttr(student.hoTen)}">
+    <label>Lớp</label>
+    <input type="text" id="stuClass" placeholder="Lớp YCT2 - Tối 3/5/7" value="${escapeAttr(student.lop)}">
+    <div class="row-actions" style="margin-top:12px;">
+      <button class="btn submit" onclick="submitResult()">Nộp bài</button>
+    </div>
+    <div class="feedback" id="fb-submit"></div>
+  </div>`;
 }
 
 async function submitResult(){
-  const btn=document.getElementById("btn-submit"), st=document.getElementById("submit-status");
-  btn.disabled=true; btn.textContent="⏳ Đang gửi…";
-  st.textContent=""; st.className="submit-status";
+  const name = document.getElementById('stuName').value.trim();
+  const cls = document.getElementById('stuClass').value.trim();
+  const fb = document.getElementById('fb-submit');
+  if(!name){
+    fb.className = 'feedback bad';
+    fb.textContent = 'Vui lòng nhập họ tên trước khi nộp bài.';
+    return;
+  }
+  const vals = Object.values(state.answers);
+  const dungCount = vals.filter(Boolean).length;
 
-  const { score: autoScore, perType, punctuationPenalty } = computeScore100();
-  const wordMatching = results.word_matching || {correct:0,total:0};
-  const listenMC      = results.listen_mc     || {correct:0,total:0};
-  const listenTF      = results.listen_tf     || {correct:0,total:0};
-  const readingMC     = results.reading_mc    || {correct:0,total:0};
-  const sentord        = results.sentence_order || {correct:0,total:0};
-  const translate       = results.translate      || {correct:0,total:0};
-  const writing          = results.writing        || {answers:[]};
+  // Tách điểm theo từng nhóm dạng bài (dựa trên tiền tố key đã có sẵn trong state.answers)
+  // để khớp với các cột chi tiết trong tab ket_qua (Trắc nghiệm / Sắp xếp câu / Dịch câu).
+  function categoryScore(prefixes){
+    return Object.keys(state.answers).filter(k =>
+      prefixes.some(p => k.startsWith(p)) && state.answers[k]
+    ).length;
+  }
+  const tracNghiem = categoryScore(['listen1-','read-','mc-']);
+  const sapXepCau = categoryScore(['so-']);
+  const dichCau = categoryScore(['tr-']);
+
+  const writingText = [...document.querySelectorAll('[id^="wr-"]')].map(t => t.value).filter(Boolean).join(' | ');
+
+  // Ưu tiên nhãn cấp độ mà chính Apps Script tự nhận diện được từ tên tab thật
+  // trong Sheet (DATA.level) — phòng trường hợp URL bị dán nhầm sang Sheet cấp khác.
+  const trinhDo = (DATA && DATA.level) ? DATA.level : state.level;
 
   const payload = {
-    action: "submitResult",
-    timestamp: new Date().toISOString(),
-    name: name,
-    className: cls,
-    level: YCT_LABEL[level]||level,
-    lesson: currentLesson.lesson,
-    lessonTitle: currentLesson.title || "",
-    word_matching: wordMatching, listen_mc: listenMC, listen_tf: listenTF,
-    reading_mc: readingMC, sentence_order: sentord, translate: translate,
-    writing: writing.answers,
-    totalAutoScore: autoScore,
-    totalAutoMax: 100,
-    punctuationPenalty: punctuationPenalty,
-    scoreBreakdown: perType,
-    writingAnswers: writing.answers.map((a,i)=>(i+1)+". "+a.word+": "+a.answer).join(" | ")
+    hoTen: name,
+    lop: cls,
+    trinhDo: trinhDo,
+    baiSo: state.lesson,
+    tracNghiem: tracNghiem,
+    sapXepCau: sapXepCau,
+    dichCau: dichCau,
+    tongDiem: dungCount,
+    baiTuLuan: writingText
   };
 
-  saveResultsToLocal({name, cls, level: YCT_LABEL[level]||level, lesson: currentLesson.lesson, ...payload});
-
-  const endpoint = YCT_URL[level];
+  fb.className = 'feedback ok';
+  fb.textContent = 'Đang nộp bài...';
   try{
-    await fetch(endpoint, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {"Content-Type": "application/json"},
+    await fetch(APPS_SCRIPT_URLS[state.level], {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
       body: JSON.stringify(payload)
     });
-    st.textContent="✓ Gửi thành công! Kết quả đã được lưu vào bảng điểm.";
-    st.className="submit-status ok";
-    btn.textContent="✓ Đã gửi";
-    btn.disabled=true;
-    clearLocalResults();
-  }catch(e){
-    console.error("❌ Fetch error:", e.message);
-    st.textContent="⚠️ Lỗi kết nối. Bấm để gửi lại.";
-    st.className="submit-status err";
-    btn.disabled=false;
-    btn.textContent="☁ Gửi kết quả lên bảng điểm";
+    fb.textContent = '✓ Đã nộp bài thành công! Giáo viên sẽ xem kết quả trong tab ket_qua.';
+  }catch(err){
+    fb.className = 'feedback bad';
+    fb.textContent = 'Nộp bài thất bại: ' + err.message;
   }
 }
 
-function goHome(){
-  level=""; levelData=null; currentLesson=null; activities=[]; actIndex=0; itemIndex=0; results={};
-  translatePunctPenalty = 0;
-  document.querySelectorAll(".level-card").forEach(el=>el.classList.remove("selected"));
-  show("screen-home");
-}
-
-renderLevelGrid();
+buildLandingGrid();
 </script>
-
 </body>
 </html>
