@@ -977,7 +977,10 @@ function renderSentenceOrder(body, item){
   // không khớp được (ví dụ thiếu hẳn 1 từ phiên âm ở giữa câu) thì bỏ qua toàn
   // bộ, chỉ hiện chữ Hán như trước — không báo lỗi.
   const isPunctToken = (tok) => tok.replace(PUNCT_CHARS_REGEX, "").trim() === "";
-  const rawPinyinTokens = String(item.pinyin || "").trim() ? String(item.pinyin).trim().split(/\s+/) : [];
+  // Nếu 1 từ phiên âm lỡ có dính dấu câu (VD giáo viên gõ "ma?" hay "lǎoshī。")
+  // thì tự động bỏ dấu câu đó đi trước khi hiện — chỉ hiện phần phiên âm thật.
+  const stripPunct = (tok) => tok.replace(PUNCT_CHARS_REGEX, "").trim();
+  const rawPinyinTokens = String(item.pinyin || "").trim() ? String(item.pinyin).trim().split(/\s+/).map(stripPunct) : [];
   let pinyins = null;
   if(rawPinyinTokens.length === words.length){
     // Số token khớp tuyệt đối (câu không có dấu cách trước dấu câu) — dùng luôn.
