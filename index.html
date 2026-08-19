@@ -968,11 +968,28 @@ function renderSentenceOrder(body, item){
     else if(k > 10) break;
   }
   const words = answer.split(/\s+/).filter(Boolean);
-  // Cột "pinyin" (nếu Sheet có điền) — phải chứa đúng số từ, cùng thứ tự với
-  // cột "answer", cách nhau bằng dấu cách, để mỗi từ hiện đúng phiên âm của nó.
-  // Nếu không có cột này, hoặc số từ không khớp, hệ thống bỏ qua — chỉ hiện chữ Hán.
-  const rawPinyins = String(item.pinyin || "").trim() ? String(item.pinyin).trim().split(/\s+/) : [];
-  const pinyins = rawPinyins.length === words.length ? rawPinyins : null;
+  // Cột "pinyin" (nếu Sheet có điền): mỗi từ trong "pinyin" cách nhau bằng dấu
+  // cách, cùng thứ tự với các TỪ (không tính dấu câu) trong "answer". Một số
+  // câu có dấu câu (， 。 ？ …) được tách thành 1 "từ" riêng trong "answer" (vì
+  // có dấu cách phía trước), trong khi cột "pinyin" thường không có phiên âm
+  // cho dấu câu — nên ta khớp phiên âm theo TỪNG TỪ THỰC (bỏ qua token chỉ có
+  // dấu câu) thay vì yêu cầu số lượng token phải khớp tuyệt đối 1-1. Nếu vẫn
+  // không khớp được (ví dụ thiếu hẳn 1 từ phiên âm ở giữa câu) thì bỏ qua toàn
+  // bộ, chỉ hiện chữ Hán như trước — không báo lỗi.
+  const isPunctToken = (tok) => tok.replace(PUNCT_CHARS_REGEX, "").trim() === "";
+  const rawPinyinTokens = String(item.pinyin || "").trim() ? String(item.pinyin).trim().split(/\s+/) : [];
+  let pinyins = null;
+  if(rawPinyinTokens.length === words.length){
+    // Số token khớp tuyệt đối (câu không có dấu cách trước dấu câu) — dùng luôn.
+    pinyins = rawPinyinTokens;
+  } else {
+    const nonPunctCount = words.filter(w => !isPunctToken(w)).length;
+    if(rawPinyinTokens.length === nonPunctCount){
+      // Ghép phiên âm vào đúng từ thực, bỏ qua các token chỉ là dấu câu.
+      const queue = rawPinyinTokens.slice();
+      pinyins = words.map(w => isPunctToken(w) ? "" : queue.shift());
+    }
+  }
   sentordBuilt = [];
   sentordPoolUsed = new Array(words.length).fill(false);
   sentordSubmitted = false;
@@ -994,7 +1011,7 @@ function renderSentenceOrder(body, item){
   pool.forEach(({w,i})=>{
     const tok = document.createElement("div");
     tok.className = "word-tok"; tok.dataset.idx = i;
-    tok.innerHTML = pinyins ? '<span class="tok-py">'+pinyins[i]+'</span><span class="tok-hanzi">'+w+'</span>' : w;
+    tok.innerHTML = (pinyins && pinyins[i]) ? '<span class="tok-py">'+pinyins[i]+'</span><span class="tok-hanzi">'+w+'</span>' : w;
     tok.onclick = () => sentordPick(i, tok);
     poolEl.appendChild(tok);
   });
@@ -1032,7 +1049,7 @@ function renderSentordAnswer(){
   el.innerHTML = sentordBuilt.map(w=>{
     if(pinyins){
       const i = window.__sentordWords.indexOf(w);
-      if(i !== -1) return '<span class="word-tok" style="cursor:default"><span class="tok-py">'+pinyins[i]+'</span><span class="tok-hanzi">'+w+'</span></span>';
+      if(i !== -1 && pinyins[i]) return '<span class="word-tok" style="cursor:default"><span class="tok-py">'+pinyins[i]+'</span><span class="tok-hanzi">'+w+'</span></span>';
     }
     return '<span class="word-tok" style="cursor:default">'+w+'</span>';
   }).join("");
